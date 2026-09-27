@@ -1757,27 +1757,110 @@ export default function App() {
             {/* Clinic Environment & Hospital Integration */}
             <section className="bg-slate-950 text-white pt-12 sm:pt-16 pb-6">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-center md:text-left mb-10 sm:mb-12">
-                  <div className="space-y-2">
-                    <div className="text-blue-400 font-bold text-base sm:text-lg">Hospital Grade OT & ICU</div>
-                    <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-                      Equipped to handle complex dental & maxillofacial surgeries in coordination with
-                      complete OT setup at Asian Hospital.
-                    </p>
+                {/* Section Header */}
+                <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-blue-400 text-xs font-semibold mb-3">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>CLINICAL EXCELLENCE & INFRASTRUCTURE</span>
                   </div>
-                  <div className="space-y-2">
-                    <div className="text-blue-400 font-bold text-base sm:text-lg">Dental Phobia & Gentle Care</div>
-                    <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-                      Special care for nervous patients and small children with comfortable, painless,
-                      and minimally invasive modern techniques.
-                    </p>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                    Hospital-Grade Standards & Personalized Care
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-400 mt-2">
+                    Advanced clinical facilities backed by Asian Hospital for safety, comfort, and uncompromising surgical precision.
+                  </p>
+                </div>
+
+                {/* 3 Premium Glass Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 mb-12 sm:mb-16">
+                  {/* Card 1: Hospital Grade OT & ICU */}
+                  <div className="relative group bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/90 hover:border-blue-500/40 rounded-3xl p-6 sm:p-7 transition-all duration-300 shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 flex flex-col justify-between overflow-hidden">
+                    <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all pointer-events-none" />
+
+                    <div>
+                      <div className="flex items-center justify-between gap-3 mb-5">
+                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-inner">
+                          <Building2 className="w-6 h-6" />
+                        </div>
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-500/10 border border-blue-500/20 text-blue-400">
+                          Surgical Backup
+                        </span>
+                      </div>
+
+                      <h4 className="text-base sm:text-lg font-bold text-white tracking-tight group-hover:text-blue-300 transition-colors mb-2">
+                        Hospital Grade OT & ICU
+                      </h4>
+
+                      <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                        Equipped to handle complex dental & maxillofacial surgeries in coordination with
+                        complete OT setup at Asian Hospital.
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center gap-2 text-xs font-medium text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>Full Anesthesia & Emergency Ready</span>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="text-blue-400 font-bold text-base sm:text-lg">Direct Doctor Communication</div>
-                    <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-                      No intermediaries. Direct post-procedure follow-ups and consultations with Dr.
-                      Adeeb Thaha C S for complete peace of mind.
-                    </p>
+
+                  {/* Card 2: Dental Phobia & Gentle Care */}
+                  <div className="relative group bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/40 rounded-3xl p-6 sm:p-7 transition-all duration-300 shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1 flex flex-col justify-between overflow-hidden">
+                    <div className="absolute -top-12 -right-12 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all pointer-events-none" />
+
+                    <div>
+                      <div className="flex items-center justify-between gap-3 mb-5">
+                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-inner">
+                          <Smile className="w-6 h-6" />
+                        </div>
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                          Painless Care
+                        </span>
+                      </div>
+
+                      <h4 className="text-base sm:text-lg font-bold text-white tracking-tight group-hover:text-emerald-300 transition-colors mb-2">
+                        Dental Phobia & Gentle Care
+                      </h4>
+
+                      <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                        Special care for nervous patients and small children with comfortable, painless,
+                        and minimally invasive modern techniques.
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center gap-2 text-xs font-medium text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>Zero-Anxiety & Minimally Invasive</span>
+                    </div>
+                  </div>
+
+                  {/* Card 3: Direct Doctor Communication */}
+                  <div className="relative group bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/90 hover:border-indigo-500/40 rounded-3xl p-6 sm:p-7 transition-all duration-300 shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 flex flex-col justify-between overflow-hidden">
+                    <div className="absolute -top-12 -right-12 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all pointer-events-none" />
+
+                    <div>
+                      <div className="flex items-center justify-between gap-3 mb-5">
+                        <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center group-hover:scale-105 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-inner">
+                          <Stethoscope className="w-6 h-6" />
+                        </div>
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+                          Personal Attention
+                        </span>
+                      </div>
+
+                      <h4 className="text-base sm:text-lg font-bold text-white tracking-tight group-hover:text-indigo-300 transition-colors mb-2">
+                        Direct Doctor Communication
+                      </h4>
+
+                      <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                        No intermediaries. Direct post-procedure follow-ups and consultations with Dr.
+                        Adeeb Thaha C S for complete peace of mind.
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center gap-2 text-xs font-medium text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>Direct WhatsApp & Call Follow-Up</span>
+                    </div>
                   </div>
                 </div>
 
