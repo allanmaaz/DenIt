@@ -53,10 +53,10 @@ function DentalToothIcon({ className = "w-6 h-6" }) {
 
 const CLINIC_INFO = {
   name: "Asian Dental Care",
-  doctor: "Dr. Adeeb Taha",
+  doctor: "Dr. Adeeb Thaha C S",
   degrees: "BDS, MDS, FICOI (USA)",
-  title: "Consultant Periodontist, Implantologist & Chief Dental Surgeon",
-  tagline: "“Beauty is power; A smile is its sword”",
+  title: "Periodontist & Oral Implantologist",
+  tagline: "Modern Dental Excellence & Gentle Care",
   address: "18, Lady Curzon Rd, Near Bowring Hospital, Tasker Town, Shivaji Nagar, Bengaluru, Karnataka 560052",
   phone: "+91 8971763097",
   landline: "080-41201393",
@@ -197,7 +197,7 @@ export default function App() {
 
   const handleDoctorLogin = (e) => {
     e.preventDefault();
-    if (doctorPin === "1234" || doctorPin === "2026" || doctorPin === "taha") {
+    if (doctorPin === "1234" || doctorPin === "2026" || doctorPin.toLowerCase() === "taha" || doctorPin.toLowerCase() === "thaha") {
       setIsDoctorAuthenticated(true);
       setShowDoctorLoginModal(false);
       setActiveTab("doctor");
@@ -569,7 +569,7 @@ export default function App() {
                 Asian Dental Care
               </h1>
               <p className="text-[11px] sm:text-xs font-semibold text-blue-700 mt-0.5 truncate max-w-[165px] sm:max-w-none">
-                Dr. Adeeb Taha • Periodontist & Implantologist
+                Dr. Adeeb Thaha C S • Periodontist & Oral Implantologist
               </p>
             </div>
           </div>
@@ -717,7 +717,7 @@ export default function App() {
                     <div className="relative shrink-0">
                       <img
                         src="/doctor.jpeg"
-                        alt="Dr. Adeeb Taha"
+                        alt="Dr. Adeeb Thaha C S"
                         className="w-18 h-18 rounded-xl object-cover object-top border border-slate-200 shadow-2xs"
                         onError={(e) => { e.target.src = "/doctor.png"; }}
                       />
@@ -731,7 +731,7 @@ export default function App() {
                         <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
                       </div>
                       <p className="text-xs font-semibold text-blue-700 leading-tight mt-0.5">
-                        Consultant Periodontist & Implantologist
+                        Periodontist & Oral Implantologist
                       </p>
                       <p className="text-[11px] text-slate-500 mt-0.5 font-medium truncate">
                         {CLINIC_INFO.degrees} • 12+ Yrs Exp
@@ -811,7 +811,7 @@ export default function App() {
                         <div className="relative h-88 bg-slate-100 overflow-hidden">
                           <img
                             src="/doctor.jpeg"
-                            alt="Dr. Adeeb Taha - Consultant Periodontist & Implantologist at Asian Dental Care"
+                            alt="Dr. Adeeb Thaha C S - Periodontist & Oral Implantologist at Asian Dental Care"
                             className="w-full h-full object-cover object-top"
                             onError={(e) => {
                               e.target.src = "/doctor.png";
@@ -897,7 +897,7 @@ export default function App() {
                       </div>
 
                       <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-400 font-medium">Dr. Adeeb Taha</span>
+                        <span className="text-[11px] text-slate-400 font-medium">Dr. Adeeb Thaha C S</span>
                         <button
                           onClick={() => {
                             setBooking((prev) => ({ ...prev, procedure: p.title }));
@@ -923,14 +923,14 @@ export default function App() {
                     <div className="relative max-w-sm w-full">
                       <img
                         src="/doctor.jpeg"
-                        alt="Dr. Adeeb Taha"
+                        alt="Dr. Adeeb Thaha C S"
                         className="w-full h-80 sm:h-96 object-cover object-top rounded-2xl border border-slate-200 shadow-md"
                         onError={(e) => { e.target.src = "/doctor.png"; }}
                       />
                       <div className="absolute bottom-3 left-3 right-3 bg-slate-900/90 backdrop-blur-xs text-white p-3 rounded-xl border border-slate-700 flex items-center justify-between">
                         <div>
                           <div className="text-xs text-slate-400">Chief Consultant</div>
-                          <div className="font-bold text-sm">Dr. Adeeb Taha</div>
+                          <div className="font-bold text-sm">Dr. Adeeb Thaha C S</div>
                         </div>
                         <span className="bg-blue-700 text-white text-[11px] font-semibold px-2 py-1 rounded">
                           FICOI (USA)
@@ -941,13 +941,13 @@ export default function App() {
                   <div className="lg:col-span-7 space-y-4">
                     <div className="text-xs font-bold uppercase tracking-wider text-blue-700">Meet Your Doctor</div>
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                      Dr. Adeeb Taha (BDS, MDS, FICOI)
+                      Dr. Adeeb Thaha C S (BDS, MDS, FICOI)
                     </h3>
                     <p className="text-sm font-semibold text-blue-700">
-                      Consultant Periodontist, Implantologist & Chief Dental Surgeon
+                      Periodontist & Oral Implantologist
                     </p>
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                      Dr. Adeeb Taha is an esteemed dental surgeon and implantologist based in Bengaluru with over 12 years of specialized clinical experience. Holding the prestigious Fellowship of the International Congress of Oral Implantologists (FICOI, USA) and a Master of Dental Surgery (MDS) in Periodontics, he is renowned for painless single-visit root canals, immediate dental implants, and smile reconstructions.
+                      Dr. Adeeb Thaha C S is an esteemed dental surgeon and oral implantologist based in Bengaluru with over 12 years of specialized clinical experience. Holding the prestigious Fellowship of the International Congress of Oral Implantologists (FICOI, USA) and a Master of Dental Surgery (MDS) in Periodontics, he is renowned for painless single-visit root canals, immediate dental implants, and smile reconstructions.
                     </p>
                     <div className="grid grid-cols-2 gap-3 pt-2">
                       <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
@@ -983,7 +983,7 @@ export default function App() {
                     Trusted by Patients Across Bengaluru
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-2">
-                    Read genuine experiences from patients treated at Asian Dental Care by Dr. Adeeb Taha.
+                    Read genuine experiences from patients treated at Asian Dental Care by Dr. Adeeb Thaha C S.
                   </p>
                 </div>
 
@@ -993,7 +993,7 @@ export default function App() {
                       ⭐⭐⭐⭐⭐ 5.0
                     </div>
                     <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
-                      "I was terrified of getting a root canal, but Dr. Adeeb Taha made it completely painless in one single visit. He explains every step gently. Truly the best dental experience I've had."
+                      "I was terrified of getting a root canal, but Dr. Adeeb Thaha made it completely painless in one single visit. He explains every step gently. Truly the best dental experience I've had."
                     </p>
                     <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                       <span className="font-bold text-slate-900">Sarah K.</span>
@@ -1006,7 +1006,7 @@ export default function App() {
                       ⭐⭐⭐⭐⭐ 5.0
                     </div>
                     <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
-                      "Had two dental implants placed by Dr. Adeeb. The precision and cleanliness of the clinic, along with the hospital OT setup, gave me immense confidence. Healing was swift with zero complications."
+                      "Had two dental implants placed by Dr. Adeeb Thaha. The precision and cleanliness of the clinic, along with the hospital OT setup, gave me immense confidence. Healing was swift with zero complications."
                     </p>
                     <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                       <span className="font-bold text-slate-900">Mohammed Imran</span>
@@ -1019,7 +1019,7 @@ export default function App() {
                       ⭐⭐⭐⭐⭐ 5.0
                     </div>
                     <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
-                      "The clinic is located right on Lady Curzon Road near Bowring Hospital. Zero waiting time when you book in advance. Dr. Adeeb is courteous and doesn't recommend unnecessary treatments."
+                      "The clinic is located right on Lady Curzon Road near Bowring Hospital. Zero waiting time when you book in advance. Dr. Adeeb Thaha is courteous and doesn't recommend unnecessary treatments."
                     </p>
                     <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                       <span className="font-bold text-slate-900">Rajesh Gowda</span>
@@ -1052,7 +1052,7 @@ export default function App() {
                     <div className="text-blue-400 font-bold text-base sm:text-lg">Direct Doctor Communication</div>
                     <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
                       No intermediaries. Direct post-procedure follow-ups and consultations with Dr.
-                      Adeeb Taha for complete peace of mind.
+                      Adeeb Thaha C S for complete peace of mind.
                     </p>
                   </div>
                 </div>
@@ -1153,7 +1153,7 @@ export default function App() {
           <section className="py-8 sm:py-12 max-w-4xl mx-auto px-3 sm:px-6 lg:px-8">
             <div className="text-center mb-6 sm:mb-10">
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                Book a Visit with Dr. Adeeb Taha
+                Book a Visit with Dr. Adeeb Thaha C S
               </h2>
               <p className="text-slate-600 mt-1.5 sm:mt-2 text-xs sm:text-sm">
                 Reserve your confirmed dental consultation at Asian Dental Care or schedule an
@@ -1489,7 +1489,7 @@ export default function App() {
                         <div className="mt-4 pt-4 border-t border-slate-100 bg-slate-50 rounded-xl p-4 space-y-3">
                           <div className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center gap-1.5">
                             <FileText className="w-3.5 h-3.5 text-blue-700" />
-                            <span>Dr. Adeeb Taha's Clinical Prescription</span>
+                            <span>Dr. Adeeb Thaha's Clinical Prescription</span>
                           </div>
 
                           {item.prescriptions.map((pres) => (
@@ -1563,7 +1563,7 @@ export default function App() {
                   Doctor Clinical Practice Management
                 </span>
                 <h2 className="text-2xl font-black text-slate-900">
-                  Dr. Adeeb Taha's Patient Queue & Prescriptions
+                  Dr. Adeeb Thaha's Patient Queue & Prescriptions
                 </h2>
               </div>
 
@@ -1904,7 +1904,7 @@ export default function App() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-base">{CLINIC_INFO.name}</h4>
-                  <p className="text-xs text-blue-700 font-semibold">Practice of Dr. Adeeb Taha</p>
+                  <p className="text-xs text-blue-700 font-semibold">Practice of Dr. Adeeb Thaha C S</p>
                 </div>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed max-w-sm">
@@ -1952,7 +1952,7 @@ export default function App() {
 
           {/* Bottom Footer Copyright & Discreet Doctor Link */}
           <div className="pt-8 mt-8 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
-            <div>© {new Date().getFullYear()} Asian Dental Care • Dr. Adeeb Taha Practice. All rights reserved.</div>
+            <div>© {new Date().getFullYear()} Asian Dental Care • Dr. Adeeb Thaha C S Practice. All rights reserved.</div>
             <button
               onClick={() => setShowDoctorLoginModal(true)}
               className="text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors font-medium text-[11px]"
@@ -2002,7 +2002,7 @@ export default function App() {
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 text-sm">Doctor Clinical Access</h3>
-                  <p className="text-xs text-slate-500">Dr. Adeeb Taha Private Practice</p>
+                  <p className="text-xs text-slate-500">Dr. Adeeb Thaha C S Private Practice</p>
                 </div>
               </div>
               <button

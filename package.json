@@ -2,7 +2,7 @@
   "name": "ledoctor-platform",
   "version": "1.0.0",
   "private": true,
-  "description": "Asian Dental Care - Private Dental Practice Platform for Dr. Adeeb Taha",
+  "description": "Asian Dental Care - Private Dental Practice Platform for Dr. Adeeb Thaha C S",
   "scripts": {
     "dev": "npm --prefix web run dev",
     "dev:web": "npm --prefix web run dev",
@@ -15,13 +15,13 @@
   "keywords": [
     "asian-dental-care",
     "dentistry",
-    "dr-adeeb-taha",
+    "dr-adeeb-thaha-cs",
     "periodontics",
     "implants",
     "react",
     "vite",
     "supabase"
   ],
-  "author": "Dr. Adeeb Taha & Team",
+  "author": "Dr. Adeeb Thaha C S & Team",
   "license": "UNLICENSED"
 }
