@@ -27,6 +27,11 @@ import {
   Smile,
   Menu,
   Bot,
+  Building2,
+  Sparkles,
+  ArrowRight,
+  Star,
+  ChevronDown,
 } from "lucide-react";
 import { supabase } from "./lib/supabaseClient";
 import DentalChatbot from "./components/DentalChatbot";
@@ -144,11 +149,58 @@ const TIME_SLOTS = [
   "07:30 PM",
 ];
 
+// 6 Compact cards matching the hero mockup
+const QUICK_TREATMENTS = [
+  {
+    id: "general",
+    title: "General Dentistry",
+    desc: "Checkups, cleanings, fillings and more.",
+    icon: DentalToothIcon,
+    procedureName: "Oral Prophylaxis & Scaling",
+  },
+  {
+    id: "implants",
+    title: "Dental Implants",
+    desc: "Permanent solutions for missing teeth.",
+    icon: ShieldCheck,
+    procedureName: "Dental Implants",
+  },
+  {
+    id: "rct",
+    title: "Root Canal Treatment",
+    desc: "Painless, single-visit RCT options.",
+    icon: Activity,
+    procedureName: "Root Canal Therapy (RCT)",
+  },
+  {
+    id: "aligners",
+    title: "Invisible Aligners",
+    desc: "Straighter smiles with clear aligners.",
+    icon: Smile,
+    procedureName: "Clear Aligners & Braces",
+  },
+  {
+    id: "cosmetic",
+    title: "Cosmetic Dentistry",
+    desc: "Smile makeovers, veneers and more.",
+    icon: Sparkles,
+    procedureName: "Zirconia Crowns & Bridges",
+  },
+  {
+    id: "gum",
+    title: "Gum Treatments",
+    desc: "Advanced periodontal care for healthy gums.",
+    icon: ShieldCheck,
+    procedureName: "Oral Prophylaxis & Scaling",
+  },
+];
+
 export default function App() {
   const [activeTab, setActiveTab] = useState("home"); // home | book | lookup | doctor
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [selectedProcedure, setSelectedProcedure] = useState("Root Canal Therapy (RCT)");
+  const [showAllProcedures, setShowAllProcedures] = useState(false);
 
   // Booking Form State
   const [booking, setBooking] = useState({
@@ -797,42 +849,108 @@ export default function App() {
             </div>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Desktop Navigation Links matching Mockup */}
+          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5">
             <button
-              onClick={() => setActiveTab("home")}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+              onClick={() => {
+                setActiveTab("home");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className={`px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 ${
                 activeTab === "home"
-                  ? "text-blue-700 bg-blue-50"
+                  ? "text-blue-700 bg-blue-50 font-bold"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
-              Treatments & Doctor
+              <span>Home</span>
             </button>
-            <button
-              onClick={() => setActiveTab("book")}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                activeTab === "book"
-                  ? "text-blue-700 bg-blue-50"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-              }`}
+
+            <a
+              href="#procedures"
+              onClick={(e) => {
+                if (activeTab !== "home") {
+                  e.preventDefault();
+                  setActiveTab("home");
+                  setTimeout(() => {
+                    document.getElementById("procedures")?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }
+              }}
+              className="px-3.5 py-1.5 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all flex items-center gap-1.5"
             >
-              Book Appointment
-            </button>
+              <DentalToothIcon className="w-3.5 h-3.5 text-slate-500" />
+              <span>Treatments</span>
+              <ChevronDown className="w-3 h-3 text-slate-400" />
+            </a>
+
+            <a
+              href="#doctor-bio"
+              onClick={(e) => {
+                if (activeTab !== "home") {
+                  e.preventDefault();
+                  setActiveTab("home");
+                  setTimeout(() => {
+                    document.getElementById("doctor-bio")?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }
+              }}
+              className="px-3.5 py-1.5 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all flex items-center gap-1.5"
+            >
+              <User className="w-3.5 h-3.5 text-slate-500" />
+              <span>About Doctor</span>
+            </a>
+
             <button
               onClick={() => setActiveTab("lookup")}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 ${
                 activeTab === "lookup"
-                  ? "text-blue-700 bg-blue-50"
+                  ? "text-blue-700 bg-blue-50 font-bold"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
-              Patient Portal
+              <FileText className="w-3.5 h-3.5 text-slate-500" />
+              <span>Patient Portal</span>
+              <ChevronDown className="w-3 h-3 text-slate-400" />
             </button>
+
+            <a
+              href="#reviews"
+              onClick={(e) => {
+                if (activeTab !== "home") {
+                  e.preventDefault();
+                  setActiveTab("home");
+                  setTimeout(() => {
+                    document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }
+              }}
+              className="px-3.5 py-1.5 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all flex items-center gap-1.5"
+            >
+              <Star className="w-3.5 h-3.5 text-slate-500" />
+              <span>Reviews</span>
+            </a>
+
+            <a
+              href="#location"
+              onClick={(e) => {
+                if (activeTab !== "home") {
+                  e.preventDefault();
+                  setActiveTab("home");
+                  setTimeout(() => {
+                    document.getElementById("location")?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }
+              }}
+              className="px-3.5 py-1.5 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all flex items-center gap-1.5"
+            >
+              <Phone className="w-3.5 h-3.5 text-slate-500" />
+              <span>Contact</span>
+            </a>
+
             {isDoctorAuthenticated && (
               <button
                 onClick={() => setActiveTab("doctor")}
-                className={`ml-3 px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                className={`ml-2 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all ${
                   activeTab === "doctor"
                     ? "bg-slate-900 text-white shadow-sm"
                     : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
@@ -844,13 +962,13 @@ export default function App() {
             )}
           </nav>
 
-          {/* Right Controls: Desktop Book CTA + Mobile Hamburger (no duplicate phone/book buttons on mobile) */}
+          {/* Right Controls: Desktop Book CTA + Mobile Hamburger */}
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setActiveTab("book")}
-              className="hidden sm:flex bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-xs items-center gap-1.5"
+              className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white px-4.5 py-2.5 rounded-xl text-sm font-bold shadow-xs hover:shadow transition-all items-center gap-2"
             >
-              <Calendar className="w-3.5 h-3.5" />
+              <Calendar className="w-4 h-4" />
               <span>Book Consultation</span>
             </button>
             <button
@@ -931,7 +1049,11 @@ export default function App() {
             </div>
 
             {/* Hero Section */}
-            <section className="bg-slate-50/80 pt-4 sm:pt-12 pb-10 sm:pb-20 border-b border-slate-200">
+            <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/50 via-slate-50/30 to-white pt-4 sm:pt-12 pb-12 sm:pb-20 border-b border-slate-100">
+              {/* Subtle ambient glows matching the light dental clinic aesthetic */}
+              <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
+              <div className="absolute bottom-10 left-10 w-80 h-80 bg-sky-100/30 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
               <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
                 
                 {/* MOBILE-ONLY FEATURED DOCTOR PROFILE CARD (Credentials Only - Quick actions live in sticky bottom bar) */}
@@ -970,108 +1092,139 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* Desktop & Tablet Split Hero Layout (Col 7 / Col 5) */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                  {/* Left Column: Clinic Description */}
-                  <div className="lg:col-span-7 space-y-4 sm:space-y-6">
-                    <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-[1.15]">
+                  {/* Left Column: Clinic Description & CTAs */}
+                  <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+                    {/* Notice: No "Trusted Dental Care in Shivajinagar" badge per user instruction */}
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-[1.14]">
                       Modern, Painless Dentistry by{" "}
-                      <span className="text-blue-700">
+                      <span className="text-blue-600 block sm:inline">
                         {CLINIC_INFO.doctor}
                       </span>
                     </h1>
 
-                    <p className="text-sm sm:text-lg text-slate-600 leading-relaxed font-normal">
+                    <p className="text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl">
                       Welcome to Asian Dental Care. We are dedicated to providing the highest
                       standard of modern dentistry at an affordable cost. From gentle single-visit
                       root canals and permanent dental implants to invisible aligners and smile
                       reconstruction, your dental health is in expert hands.
                     </p>
 
-                    {/* Trust Highlights - 3 responsive columns */}
-                    <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
-                      <div className="p-2.5 sm:p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
-                        <div className="text-[10px] sm:text-xs font-medium text-slate-500">Facility</div>
-                        <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5 leading-tight">OT & ICU Equipped</div>
-                      </div>
-                      <div className="p-2.5 sm:p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
-                        <div className="text-[10px] sm:text-xs font-medium text-slate-500">Wait Times</div>
-                        <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5 leading-tight">Zero Wait Queue</div>
-                      </div>
-                      <div className="p-2.5 sm:p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
-                        <div className="text-[10px] sm:text-xs font-medium text-slate-500">Appointments</div>
-                        <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5 leading-tight">Prior Booking</div>
-                      </div>
-                    </div>
-
-                    {/* CTA Buttons (Desktop / Tablet) */}
-                    <div className="hidden sm:flex flex-row items-center gap-3 pt-3">
+                    {/* CTA Buttons */}
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
                       <button
                         onClick={() => setActiveTab("book")}
-                        className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-xl font-semibold shadow-xs hover:shadow transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base group"
                       >
                         <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                         <span>Book an Appointment</span>
-                        <ChevronRight className="w-4 h-4 ml-1" />
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </button>
 
                       <a
                         href="https://wa.me/918971763097"
                         target="_blank"
                         rel="noreferrer"
-                        className="bg-emerald-700 hover:bg-emerald-800 text-white px-5 py-3 rounded-xl font-semibold shadow-xs hover:shadow transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+                        className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl font-semibold shadow-xs hover:shadow transition-all flex items-center justify-center gap-2.5 text-sm sm:text-base"
                       >
-                        <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
                         <span>Chat on WhatsApp</span>
                       </a>
                     </div>
+
+                    {/* 3 Feature Badges in a unified horizontal bar matching reference mockup */}
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3.5 pt-2 max-w-2xl">
+                      <div className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3.5 bg-white/95 backdrop-blur-xs rounded-2xl border border-slate-200/80 shadow-2xs">
+                        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                          <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-xs sm:text-sm font-bold text-slate-900 leading-snug truncate">Modern Facility</div>
+                          <div className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">OT & ICU Equipped</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3.5 bg-white/95 backdrop-blur-xs rounded-2xl border border-slate-200/80 shadow-2xs">
+                        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                          <Clock className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-xs sm:text-sm font-bold text-slate-900 leading-snug truncate">Zero Wait Times</div>
+                          <div className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">Efficient Appointments</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3.5 bg-white/95 backdrop-blur-xs rounded-2xl border border-slate-200/80 shadow-2xs">
+                        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                          <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-xs sm:text-sm font-bold text-slate-900 leading-snug truncate">Prior Booking</div>
+                          <div className="text-[10px] sm:text-xs text-slate-500 font-medium truncate">Guaranteed Slot</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Right Column: Doctor Photo & Clinic Card (Desktop & Tablet) */}
+                  {/* Right Column: Doctor Showcase & Floating Cards (Desktop & Tablet) */}
                   <div className="hidden sm:flex lg:col-span-5 justify-center">
-                    <div className="w-full max-w-md">
-                      <div className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden">
-                        {/* Doctor Image */}
-                        <div className="relative h-88 bg-slate-100 overflow-hidden">
-                          <img
-                            src="/doctor.jpeg"
-                            alt="Dr. Adeeb Thaha C S - Periodontist & Oral Implantologist at Asian Dental Care"
-                            className="w-full h-full object-cover object-top"
-                            onError={(e) => {
-                              e.target.src = "/doctor.png";
-                            }}
-                          />
-                          <div className="absolute bottom-3 left-3 right-3 bg-slate-900/90 backdrop-blur-xs rounded-xl p-3 text-white border border-slate-700 flex items-center justify-between">
-                            <div>
-                              <div className="text-sm font-bold flex items-center gap-1.5">
-                                <span>{CLINIC_INFO.doctor}</span>
-                                <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-                              </div>
-                              <div className="text-xs text-slate-300">{CLINIC_INFO.degrees} • {CLINIC_INFO.title}</div>
+                    <div className="relative w-full max-w-md lg:max-w-none">
+                      {/* Subtle Ambient Glow */}
+                      <div className="absolute -inset-3 bg-gradient-to-tr from-blue-200/40 via-sky-100/30 to-transparent rounded-3xl blur-2xl -z-10"></div>
+
+                      {/* Doctor Image Container */}
+                      <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-100 h-[480px] lg:h-[530px]">
+                        <img
+                          src="/doctor.jpeg"
+                          alt="Dr. Adeeb Thaha C S - Periodontist & Oral Implantologist at Asian Dental Care"
+                          className="w-full h-full object-cover object-top"
+                          onError={(e) => {
+                            e.target.src = "/doctor.png";
+                          }}
+                        />
+
+                        {/* Floating Card 1: Doctor Credentials (Mid-Right overlay) */}
+                        <div className="absolute top-[48%] -translate-y-1/2 right-3 sm:-right-2 lg:-right-4 bg-white/95 backdrop-blur-md rounded-2xl border border-white/90 shadow-xl p-3.5 sm:p-4 flex items-center justify-between gap-3.5 max-w-[320px] z-10 transition-all hover:scale-[1.02]">
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-sm font-bold text-slate-900 truncate">{CLINIC_INFO.doctor}</span>
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500 fill-emerald-50 shrink-0" />
                             </div>
-                            <span className="text-[11px] font-semibold bg-blue-700 text-white px-2.5 py-1 rounded-md">
-                              FICOI (USA)
-                            </span>
+                            <p className="text-[11px] font-medium text-slate-500 mt-0.5">{CLINIC_INFO.degrees}</p>
+                            <p className="text-xs text-slate-700 font-medium truncate">{CLINIC_INFO.title}</p>
+                            <p className="text-[11px] font-semibold text-blue-600 mt-0.5">12+ Years Experience</p>
+                          </div>
+                          <div className="bg-blue-600 text-white rounded-xl px-3 py-2 flex flex-col items-center justify-center shrink-0 shadow-xs">
+                            <ShieldCheck className="w-4 h-4" />
+                            <span className="text-[10px] font-black uppercase tracking-tight mt-0.5">FICOI</span>
+                            <span className="text-[9px] font-bold opacity-90">(USA)</span>
                           </div>
                         </div>
 
-                        {/* Card Details */}
-                        <div className="p-5 space-y-3.5">
-                          <div className="flex items-start gap-3">
-                            <MapPin className="w-5 h-5 text-blue-700 shrink-0 mt-0.5" />
-                            <div className="text-xs text-slate-600 leading-snug">
-                              <strong className="text-slate-900 block font-semibold text-sm mb-0.5">
-                                {CLINIC_INFO.name}
-                              </strong>
-                              {CLINIC_INFO.address}
+                        {/* Floating Card 2: Clinic Location & Hours (Bottom overlay) */}
+                        <div className="absolute bottom-3 left-3 sm:-left-2 lg:-left-4 right-3 sm:right-2 lg:right-4 bg-white/95 backdrop-blur-md rounded-2xl border border-white/90 shadow-xl p-3.5 sm:p-4 space-y-2.5 z-10 transition-all hover:scale-[1.01]">
+                          <div className="flex items-start gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                              <MapPin className="w-4 h-4" />
+                            </div>
+                            <div className="text-xs min-w-0">
+                              <span className="font-bold text-slate-900 block truncate">{CLINIC_INFO.name}</span>
+                              <p className="text-[11px] text-slate-500 leading-snug line-clamp-2">
+                                {CLINIC_INFO.address}
+                              </p>
                             </div>
                           </div>
 
-                          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
-                            <span className="flex items-center gap-1 font-medium text-slate-800">
-                              <Clock className="w-4 h-4 text-slate-400" />
-                              Mon - Sat: 10 AM - 8:30 PM
+                          <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+                            <div className="flex items-center gap-1.5 text-slate-600 text-[11px] font-medium">
+                              <Clock className="w-3.5 h-3.5 text-slate-400" />
+                              <span>Mon – Sat: 10 AM – 8:30 PM</span>
+                            </div>
+                            <span className="bg-blue-50 text-blue-700 font-semibold text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1 shrink-0">
+                              <Video className="w-3 h-3 text-blue-600" />
+                              In-Clinic & Video Consultation
                             </span>
-                            <span className="font-semibold text-blue-700">In-Clinic & Video</span>
                           </div>
                         </div>
                       </div>
@@ -1082,60 +1235,110 @@ export default function App() {
             </section>
 
             {/* Treatments & Clinical Services Section */}
-            <section id="procedures" className="py-12 sm:py-20 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-              <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-blue-700 mb-1.5 sm:mb-2">
-                  Specialized Procedures
-                </h2>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  Comprehensive Dental Care Under One Roof
-                </h3>
-                <p className="text-slate-600 mt-2 sm:mt-3 text-xs sm:text-base">
-                  From routine preventive hygiene to complex implant surgeries and cosmetic smile makeovers.
-                </p>
+            <section id="procedures" className="py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Eyebrow & Section Header */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1.5">
+                    OUR TREATMENTS
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    Comprehensive Dental Care Under One Roof
+                  </h2>
+                </div>
+                <button
+                  onClick={() => setShowAllProcedures(!showAllProcedures)}
+                  className="text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 group shrink-0 cursor-pointer"
+                >
+                  <span>{showAllProcedures ? "Show Compact View" : "View All Treatments"}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
-                {PROCEDURES.map((p) => {
-                  const Icon = p.icon;
+              {/* 6 Compact Treatment Cards Row matching reference mockup */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-3.5 mb-8">
+                {QUICK_TREATMENTS.map((item) => {
+                  const Icon = item.icon;
                   return (
                     <div
-                      key={p.id}
-                      className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between group"
+                      key={item.id}
+                      onClick={() => {
+                        setBooking((prev) => ({ ...prev, procedure: item.procedureName }));
+                        setActiveTab("book");
+                      }}
+                      className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs hover:shadow-md hover:border-blue-300 hover:-translate-y-0.5 transition-all flex flex-col justify-between cursor-pointer group"
                     >
                       <div>
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:bg-blue-700 group-hover:text-white transition-colors">
-                            <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                          </div>
-                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
-                            {p.duration}
-                          </span>
+                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                          <Icon className="w-5 h-5" />
                         </div>
-                        <div className="text-[11px] font-bold uppercase tracking-wider text-blue-700 mb-1">
-                          {p.category}
-                        </div>
-                        <h4 className="text-base sm:text-lg font-bold text-slate-900 mb-1.5">{p.title}</h4>
-                        <p className="text-xs text-slate-600 leading-relaxed mb-4">{p.desc}</p>
+                        <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors leading-snug mb-1">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                          {item.desc}
+                        </p>
                       </div>
-
-                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-400 font-medium">Dr. Adeeb Thaha C S</span>
-                        <button
-                          onClick={() => {
-                            setBooking((prev) => ({ ...prev, procedure: p.title }));
-                            setActiveTab("book");
-                          }}
-                          className="text-xs font-bold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:translate-x-1 transition-transform"
-                        >
-                          Book Procedure
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </button>
+                      <div className="pt-3 mt-2 flex justify-end">
+                        <span className="w-6 h-6 rounded-full bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 flex items-center justify-center transition-colors">
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
                       </div>
                     </div>
                   );
                 })}
               </div>
+
+              {/* Detailed Procedures Grid (Collapsible or Expandable) */}
+              {showAllProcedures && (
+                <div id="all-procedures" className="pt-6 border-t border-slate-200/80 animate-in fade-in duration-200">
+                  <div className="text-center max-w-2xl mx-auto mb-8">
+                    <h4 className="text-lg font-bold text-slate-900">All Specialized Procedures & Clinical Services</h4>
+                    <p className="text-xs text-slate-500 mt-1">Detailed procedural overview and appointment duration</p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+                    {PROCEDURES.map((p) => {
+                      const Icon = p.icon;
+                      return (
+                        <div
+                          key={p.id}
+                          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between group"
+                        >
+                          <div>
+                            <div className="flex items-center justify-between mb-3">
+                              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:bg-blue-700 group-hover:text-white transition-colors">
+                                <Icon className="w-5 h-5" />
+                              </div>
+                              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                                {p.duration}
+                              </span>
+                            </div>
+                            <div className="text-[11px] font-bold uppercase tracking-wider text-blue-700 mb-1">
+                              {p.category}
+                            </div>
+                            <h4 className="text-base font-bold text-slate-900 mb-1">{p.title}</h4>
+                            <p className="text-xs text-slate-600 leading-relaxed mb-4">{p.desc}</p>
+                          </div>
+
+                          <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                            <span className="text-[11px] text-slate-400 font-medium">Dr. Adeeb Thaha C S</span>
+                            <button
+                              onClick={() => {
+                                setBooking((prev) => ({ ...prev, procedure: p.title }));
+                                setActiveTab("book");
+                              }}
+                              className="text-xs font-bold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:translate-x-1 transition-transform cursor-pointer"
+                            >
+                              Book Procedure
+                              <ChevronRight className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </section>
 
             {/* Doctor Detailed Bio Section */}
