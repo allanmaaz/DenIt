@@ -1370,25 +1370,25 @@ export default function App() {
                       reconstruction, your dental health is in expert hands.
                     </p>
 
-                    {/* CTA Buttons */}
-                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
+                    {/* CTA Buttons - Side by side on mobile and desktop */}
+                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 sm:gap-4 pt-1 max-w-xl">
                       <button
                         onClick={() => setActiveTab("book")}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base group"
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-2.5 sm:px-7 py-3 sm:py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-base group w-full sm:w-auto cursor-pointer"
                       >
-                        <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span>Book an Appointment</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <Calendar className="w-3.5 h-3.5 sm:w-5 sm:h-5 shrink-0" />
+                        <span className="truncate">Book Appointment</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform hidden sm:inline" />
                       </button>
 
                       <a
                         href="https://wa.me/918971763097"
                         target="_blank"
                         rel="noreferrer"
-                        className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl font-semibold shadow-xs hover:shadow transition-all flex items-center justify-center gap-2.5 text-sm sm:text-base group"
+                        className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200/90 px-2.5 sm:px-6 py-3 sm:py-3.5 rounded-xl font-semibold shadow-xs hover:shadow transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-base group w-full sm:w-auto cursor-pointer"
                       >
-                        <WhatsAppIcon className="w-5 h-5 sm:w-5.5 sm:h-5.5 shrink-0 group-hover:scale-105 transition-transform" />
-                        <span>Chat on WhatsApp</span>
+                        <WhatsAppIcon className="w-4 h-4 sm:w-5.5 sm:h-5.5 shrink-0 group-hover:scale-105 transition-transform" />
+                        <span className="truncate">Chat on WhatsApp</span>
                       </a>
                     </div>
 
