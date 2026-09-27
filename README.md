@@ -1,89 +1,63 @@
-# LeDoctor — Healthcare Platform
+# DenIt — Dental & Healthcare Platform
 
-LeDoctor is a commercial-grade, multi-role healthcare application connecting patients with verified medical doctors. Built with pure **JavaScript**, real-time **Supabase** PostgreSQL backend, **Next.js** web dashboards, **React Native / Expo** mobile application, **Cloudflare Workers** edge gateway, and a **Python FastAPI** AI microservice.
-
----
-
-## 🎨 UI & Screens Architecture
-
-Every screen from the design reference is implemented with exact visual fidelity:
-
-### 1. Patient Mobile App (`mobile/`) — 11 Screens
-1. **Splash Screen**: LeDoctor branding with medical cross shield badge.
-2. **Onboarding Screen**: Modern medical illustration, *"Better Healthcare For A Healthier You"*, carousel indicators, `[Get Started]`.
-3. **Choose Your Role Screen**: Switch seamlessly between `[I am a Patient]` and `[I am a Doctor]`.
-4. **Patient Home Screen**: Greeting (`Good morning, Allan 👋`), search bar, specializations grid (Cardiology, Dermatology, Neurology, Orthopedics), promotional banner, upcoming appointment with `[Join]` action.
-5. **Doctor Search Screen**: Filter chips, real-time query, doctor cards with ratings, consultation fees, and next available slots.
-6. **Doctor Profile Screen**: Hero photo, verified doctor badge, qualifications, languages, tabs (`About`, `Reviews`, `Availability`), clinic details, `[Book Appointment]` CTA.
-7. **Book Appointment Slot Screen**: Date selector strip (Mon 25 — Fri 29), morning, afternoon, and evening slot picker, `[Continue]`.
-8. **Payment Screen**: Doctor mini summary, Razorpay Secured badge, payment method selector (Card, UPI, Net Banking, Wallets), `[Pay ₹800]`.
-9. **Appointment Confirmed Screen**: Emerald checkmark, appointment details, `[Add to Calendar]`, `[View Details]`, `[Go to Home]`.
-10. **Video Consultation Screen**: High-definition Agora RTC video consultation, live timer (`04:12`), PiP patient self-preview, floating controls (Mic, Camera, Switch, End Call).
-11. **Prescription View Screen**: Diagnosis (*"Mild Hypertension"*), clinical instructions, structured medication table, follow-up date, `[Download PDF]`.
-
-### 2. Doctor Mobile App (`mobile/`) — 7 Screens
-1. **Doctor Dashboard**: Header greeting (`Good morning, Dr. Sarah 👋`), 4 overview cards (Appointments `8`, Pending `3`, Completed `12`, Earnings `₹4,500`), live queue.
-2. **Doctor Appointments Management**: Filter tabs (`All`, `Pending`, `Upcoming`, `Completed`), direct `[Accept]` and `[Reject]` actions on pending requests.
-3. **Patient Details Screen**: Patient profile, blood group (`O+`), emergency contact, medical records tab, `[Message]` and `[Start Consultation]`.
-4. **Doctor Video Call Screen**: Full-screen patient view, doctor PiP, call timer, `[Rx Write]` quick prescription action.
-5. **Create Prescription Screen**: Clinical diagnosis input, lifestyle instructions, dynamic medication builder with `+ Add Medicine`, follow-up date, `[Create Prescription]`.
-6. **Doctor Earnings Screen**: Total earnings banner (`₹45,280`), monthly bar chart (Jan — Jun), recent payment ledger.
-7. **Doctor Messages Screen**: Filter tabs (`All`, `Unread`), conversation list with timestamps, interactive two-way consultation messaging.
-
-### 3. Web Dashboards (`web/`) — Next.js + Tailwind CSS
-1. **Admin Overview**: Top metrics (Total Patients `2,840`, Total Doctors `164`, Pending Verification `12`, Today's Appointments `48`), SVG curved area chart (Appointments Over Time), Revenue bar chart, real-time activity stream.
-2. **Doctor Verification Portal**: Filter tabs (`Pending`, `Verified`, `Rejected`), license inspection, `[View Documents]` dossier modal, `[Verify]` and `[Reject]` actions.
-3. **Appointments Management**: Global table with patient, doctor, date/time, type (Video, Audio, In-Person), status pills, and payment statuses.
-4. **Payments & Revenue Ledger**: Metric cards, transaction logs with Razorpay order IDs.
-5. **Doctor Web Workspace**: Doctor portal to manage clinical hours, weekly slots, immediate queue, and digital prescriptions.
-6. **Medical Specializations**: Catalog of specialties with icons and descriptions.
-7. **Real Supabase Auth Modal**: Secure Sign In and Sign Up for Patient, Doctor, and Admin roles.
+DenIt is an integrated healthcare platform designed for modern dental practices, connecting patients with verified dentists for both in-clinic chair procedures and remote tele-dentistry consultations.
 
 ---
 
-## 🗄️ Database & Security (`supabase/`)
+## 👤 Patient Journey (How It Works for Patients)
 
-### Setup in 1 Click:
-Run [`supabase/setup.sql`](file:///Users/apple/Desktop/LeDoctor/supabase/setup.sql) in your Supabase SQL Editor.
+### 1. Find the Right Dentist
+* **Browse & Search**: Search for verified dentists, dental surgeons, and orthodontists by clinic name, specialty (e.g., Root Canal, Teeth Cleaning, Invisible Aligners, Whitening), or location.
+* **View Credentials**: Review practitioner qualifications, years of experience, clinic address, and consultation fees before booking.
 
-It creates:
-- 15 PostgreSQL tables with UUID keys, timestamps, and indexes.
-- Strict Row Level Security (RLS) policies protecting patient privacy.
-- Storage buckets (`medical-records`, `doctor-documents`, `avatars`, `prescriptions`).
-- Auth triggers to automatically initialize patient and doctor profiles.
-- Pre-populated medical specialties (Cardiology, Dermatology, Neurology, Orthopedics, Pediatrics, Dentistry, Psychiatry, General Medicine, Ophthalmology, ENT).
+### 2. Book an Appointment
+* **Select Visit Type**: Choose between an **In-Clinic Chair Visit** (for cleanings, extractions, fillings) or **Digital Tele-Dentistry** (for initial assessments, tooth pain triage, or post-op checkups).
+* **Pick Date & Chair Slot**: Select any upcoming day and choose from convenient morning, afternoon, or evening time slots.
+
+### 3. Confirm & Pay Securely
+* **Transparent Pricing**: See the exact consultation fee upfront with no hidden charges.
+* **Instant Confirmation**: Pay securely using UPI, Credit/Debit card, or Net Banking. Once paid, the booking is instantly registered with the clinic.
+
+### 4. Attend the Consultation
+* **In-Clinic**: Walk in at your scheduled time with your digital appointment confirmation.
+* **Video Consultation**: Tap **Join** from the home screen to start a live, encrypted high-definition video call with your dentist.
+
+### 5. Access Digital Prescriptions & Post-Op Care
+* **Instant Digital Rx**: Immediately view clinical diagnoses (e.g., tooth quadrant/number), prescribed oral medications, dosage instructions, and duration.
+* **Post-Procedure Guidelines**: Follow specific post-operative aftercare instructions (gauze care, salt-water rinses, foods to avoid).
+* **Follow-up Reminders**: Keep track of upcoming crown fittings or stitch removal dates.
 
 ---
 
-## ⚡ Edge & Microservices
+## 🩺 Dentist & Practitioner Journey (How It Works for Doctors)
 
-1. **Cloudflare Workers** (`cloudflare/workers/`):
-   - `agora-token.js`: Generates secure Agora RTC video tokens.
-   - `razorpay-webhook.js`: Verifies HMAC-SHA256 signatures and confirms appointments.
-   - `api-gateway.js`: Edge routing, CORS, and AI proxying.
-2. **FastAPI AI Microservice** (`ai-service/`):
-   - Symptom assistant, medical report summarizer, and prescription explainer with mandatory medical disclaimers.
+### 1. Practice Setup & Verification
+* **Register**: Create an account with your medical registration number, dental qualifications (BDS/MDS), clinic address, and consultation fee.
+* **Get Verified**: Gain a verified badge once credentials are authenticated by the administration.
+
+### 2. Manage Clinic Hours & Chair Slots
+* **Operating Hours**: Set your clinic opening and closing times.
+* **Slot Duration**: Configure appointment durations based on procedure types (e.g., 20 mins for scaling, 45 mins for root canals).
+
+### 3. Patient Queue & Schedule
+* **Real-time Queue**: View daily patient arrivals, pending requests, and upcoming slots in one organized timeline.
+* **Confirm or Reschedule**: Accept booking requests with one click or notify patients of changes.
+
+### 4. Consultations & Tele-Dentistry
+* **1-Click Video Calls**: Launch secure video consultations directly from the web portal or mobile app.
+* **Patient History**: Access patient details, prior visits, and past records during the session.
+
+### 5. Issue Digital Prescriptions
+* **Record Diagnoses**: Note specific tooth numbers and conditions.
+* **Medication Builder**: Add oral antibiotics, pain relief, and antiseptic mouthwashes with dosage schedules.
+* **Post-Op Instructions**: Include custom aftercare guidelines and follow-up dates that instantly reflect on the patient’s phone.
+
+### 6. Track Earnings & Direct Messaging
+* **Financial Ledger**: Monitor total collected consultation fees, payment statuses, and settlement logs.
+* **Post-Op Chat**: Answer patient questions regarding recovery and medication timing through direct messaging.
 
 ---
 
-## 🚀 Running Locally
-
-### 1. Web Dashboard
-```bash
-cd web
-npm run dev
-# Open http://localhost:3000
-```
-
-### 2. Mobile App (Expo)
-```bash
-cd mobile
-npm start
-```
-
-### 3. AI Service (Python FastAPI)
-```bash
-cd ai-service
-pip install -r requirements.txt
-python main.py
-```
+## 🏛️ Clinic Administrator (Overview)
+* **Doctor Verification**: Review licenses and verify dental practitioners.
+* **Appointments & Revenue**: Monitor overall clinic appointments, patient volume, and transaction history.
