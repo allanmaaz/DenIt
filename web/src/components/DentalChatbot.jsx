@@ -170,6 +170,7 @@ export default function DentalChatbot({ onClose }) {
         "\n⏰ **Time:** " + data.timeSlot + "\n🏥 **Type:** " + (data.type === "IN_PERSON" ? "In-Clinic Visit" : "Video Consultation") +
         "\n\nWe'll confirm shortly. Questions? Call " + CLINIC.phone,
         [
+          { label:"💬 Get WhatsApp Confirmation", value:"wa_" + refId },
           { label:"📅 Book Another", value:"book" },
           { label:"📞 Call Clinic", value:"call" },
         ],
@@ -190,6 +191,31 @@ export default function DentalChatbot({ onClose }) {
     setMessages(prev => [...prev, userMsg(text)]);
     setInput("");
     const intent = detectIntent(text);
+
+    if (text.startsWith("wa_")) {
+      const pPhone = booking.phone ? booking.phone.replace(/\D/g, "").slice(-10) : "";
+      const cleanRef = text.replace("wa_", "");
+      const msg =
+        "🦷 *Asian Dental Care — Appointment Confirmed!*\n\n" +
+        "Dear " + (booking.fullName || "Patient") + ",\n" +
+        "Your appointment has been confirmed with *Dr. Adeeb Thaha C S* (BDS, MDS, FICOI USA).\n\n" +
+        "📅 *Date:* " + booking.date + "\n" +
+        "⏰ *Time:* " + booking.timeSlot + "\n" +
+        "🩺 *Procedure:* " + (booking.procedure || "Dental Consultation") + "\n" +
+        "🔖 *Booking Ref:* #" + cleanRef + "\n\n" +
+        "📍 *Clinic:* 18, Lady Curzon Rd, Near Bowring Hospital, Tasker Town, Shivaji Nagar, Bengaluru\n" +
+        "🗺️ *Maps:* https://www.google.com/maps/search/?api=1&query=Asian+Dental+Care+18+Lady+Curzon+Rd+Shivaji+Nagar+Bengaluru\n" +
+        "📞 *Direct:* +91 8971763097 | 080-41201393";
+      const url = pPhone
+        ? "https://wa.me/91" + pPhone + "?text=" + encodeURIComponent(msg)
+        : "https://wa.me/?text=" + encodeURIComponent(msg);
+      window.open(url, "_blank");
+      addBotMsg("Opening WhatsApp with your booking details! 📲 You can also reply directly on WhatsApp for any assistance.", [
+        { label: "📅 Book Another", value: "book" },
+        { label: "📞 Call Clinic", value: "call" }
+      ]);
+      return;
+    }
 
     if (text === "call") {
       window.open("tel:" + CLINIC.phone, "_self");

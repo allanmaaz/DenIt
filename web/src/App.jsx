@@ -269,6 +269,69 @@ const CLINIC_INFO = {
   hours: "Monday – Saturday: 10:00 AM – 8:30 PM | Sunday: By Prior Appointment",
 };
 
+// WhatsApp Notification Helpers for Asian Dental Care
+function generateWhatsAppConfirmationMessage({ patientName, date, time, procedure, refId }) {
+  return (
+    `🦷 *Asian Dental Care — Appointment Confirmed!*\n\n` +
+    `Dear ${patientName || "Patient"},\n` +
+    `Your appointment has been confirmed with *Dr. Adeeb Thaha C S* (BDS, MDS, FICOI USA).\n\n` +
+    `📅 *Date:* ${date}\n` +
+    `⏰ *Time Slot:* ${time}\n` +
+    `🩺 *Procedure:* ${procedure || "Dental Consultation"}\n` +
+    (refId ? `🔖 *Booking Ref:* #${refId.slice(0, 8).toUpperCase()}\n\n` : `\n`) +
+    `📍 *Clinic Location:* 18, Lady Curzon Rd, Near Bowring Hospital, Tasker Town, Shivaji Nagar, Bengaluru, Karnataka 560052\n` +
+    `🗺️ *Google Maps Directions:* https://www.google.com/maps/search/?api=1&query=Asian+Dental+Care+18+Lady+Curzon+Rd+Shivaji+Nagar+Bengaluru\n` +
+    `📞 *Clinic Direct:* +91 8971763097 | Landline: 080-41201393\n\n` +
+    `_Please arrive 10 minutes prior to your slot. If you need to reschedule or have queries, reply directly to this message._`
+  );
+}
+
+function generateWhatsAppReminderMessage({ patientName, time, procedure }) {
+  return (
+    `⏰ *1-Hour Reminder — Asian Dental Care*\n\n` +
+    `Dear ${patientName || "Patient"},\n` +
+    `This is a friendly reminder that your dental visit with *Dr. Adeeb Thaha C S* is scheduled in *1 hour* today at *${time}*.\n\n` +
+    (procedure ? `🩺 *Procedure:* ${procedure}\n` : "") +
+    `📍 *Clinic:* Asian Dental Care, 18, Lady Curzon Rd, Near Bowring Hospital, Shivajinagar, Bengaluru\n` +
+    `🗺️ *Directions:* https://www.google.com/maps/search/?api=1&query=Asian+Dental+Care+18+Lady+Curzon+Rd+Shivaji+Nagar+Bengaluru\n` +
+    `📞 *Direct Phone:* +91 8971763097\n\n` +
+    `_We look forward to seeing you shortly!_`
+  );
+}
+
+function generateWhatsAppPrescriptionMessage({ patientName, diagnosis, medicines, instructions, followUpDate }) {
+  let medText = "";
+  if (medicines && medicines.length > 0) {
+    medText = medicines
+      .filter((m) => m.name && m.name.trim())
+      .map((m, idx) => `  ${idx + 1}. *${m.name}* — ${m.dosage || ""} (${m.frequency || ""}) for ${m.duration || ""}`)
+      .join("\n");
+  }
+
+  return (
+    `📋 *Asian Dental Care — Prescription Summary*\n\n` +
+    `Patient: *${patientName || "Patient"}*\n` +
+    `Doctor: *Dr. Adeeb Thaha C S* (BDS, MDS, FICOI USA)\n\n` +
+    `🩺 *Diagnosis:* ${diagnosis || "Dental Examination & Treatment"}\n\n` +
+    (medText ? `💊 *Prescribed Medications:*\n${medText}\n\n` : "") +
+    (instructions ? `📌 *Doctor Instructions:* ${instructions}\n\n` : "") +
+    (followUpDate ? `🗓️ *Follow-Up Date:* ${followUpDate}\n\n` : "") +
+    `📍 *Clinic:* 18, Lady Curzon Rd, Shivajinagar, Bengaluru\n` +
+    `📞 *Questions:* +91 8971763097`
+  );
+}
+
+function parseApptNotes(notesStr) {
+  if (!notesStr) return { procedure: "Dental Consultation", name: "Patient", phone: "" };
+  const procMatch = notesStr.match(/Procedure:\s*([^|]+)/i);
+  const patientMatch = notesStr.match(/Patient:\s*([^(|]+)(?:\(([^)]+)\))?/i);
+  return {
+    procedure: procMatch ? procMatch[1].trim() : "Dental Consultation",
+    name: patientMatch ? patientMatch[1].trim() : "Patient",
+    phone: patientMatch && patientMatch[2] ? patientMatch[2].replace(/\D/g, "").slice(-10) : "",
+  };
+}
+
 const PROCEDURES = [
   {
     id: "rct",
@@ -631,6 +694,7 @@ export default function App() {
         type: booking.consultationType,
         procedure: booking.procedure,
         patientName: booking.fullName,
+        phone: booking.phone,
       });
 
       // Reset form
@@ -805,6 +869,22 @@ export default function App() {
     }
   };
 
+  const handleWhatsAppPrescription = () => {
+    if (!selectedApptForPrescription) return;
+    const pInfo = parseApptNotes(selectedApptForPrescription.notes);
+    const msg = generateWhatsAppPrescriptionMessage({
+      patientName: pInfo.name,
+      diagnosis: prescriptionForm.diagnosis,
+      medicines: prescriptionForm.medicines,
+      instructions: prescriptionForm.instructions,
+      followUpDate: prescriptionForm.followUpDate,
+    });
+    const url = pInfo.phone
+      ? `https://wa.me/91${pInfo.phone}?text=${encodeURIComponent(msg)}`
+      : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
+  };
+
   const addMedicineRow = () => {
     setPrescriptionForm((prev) => ({
       ...prev,
@@ -891,79 +971,148 @@ export default function App() {
                   <p className="text-xs text-slate-500">Patients booking online will appear here instantly.</p>
                 </div>
               ) : (
-                doctorAppointments.map((appt) => (
-                  <div
-                    key={appt.id}
-                    className={`bg-white rounded-2xl p-5 border transition-all ${
-                      selectedApptForPrescription?.id === appt.id
-                        ? "border-blue-500 ring-2 ring-blue-500/20 shadow-md"
-                        : "border-slate-200 hover:border-slate-300"
-                    }`}
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className={`w-2.5 h-2.5 rounded-full ${
-                          appt.status === "CONFIRMED" ? "bg-emerald-500"
-                          : appt.status === "COMPLETED" ? "bg-blue-500"
-                          : appt.status === "CANCELLED" ? "bg-red-500"
-                          : "bg-amber-500"
-                        }`} />
-                        <span className="font-bold text-slate-900 text-sm">
-                          {appt.appointment_date} • {appt.start_time?.slice(0, 5)}
+                doctorAppointments.map((appt) => {
+                  const patientInfo = parseApptNotes(appt.notes);
+                  return (
+                    <div
+                      key={appt.id}
+                      className={`bg-white rounded-2xl p-5 border transition-all ${
+                        selectedApptForPrescription?.id === appt.id
+                          ? "border-blue-500 ring-2 ring-blue-500/20 shadow-md"
+                          : "border-slate-200 hover:border-slate-300"
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div className="flex items-center gap-2">
+                          <span className={`w-2.5 h-2.5 rounded-full ${
+                            appt.status === "CONFIRMED" ? "bg-emerald-500"
+                            : appt.status === "COMPLETED" ? "bg-blue-500"
+                            : appt.status === "CANCELLED" ? "bg-red-500"
+                            : "bg-amber-500"
+                          }`} />
+                          <span className="font-bold text-slate-900 text-sm">
+                            {appt.appointment_date} • {appt.start_time?.slice(0, 5)}
+                          </span>
+                          <span className="text-xs text-slate-400 font-mono">#{appt.id.slice(0, 6)}</span>
+                        </div>
+                        <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
+                          appt.status === "CONFIRMED" ? "bg-emerald-100 text-emerald-800"
+                          : appt.status === "COMPLETED" ? "bg-blue-100 text-blue-800"
+                          : appt.status === "CANCELLED" ? "bg-red-100 text-red-800"
+                          : "bg-amber-100 text-amber-800"
+                        }`}>{appt.status}</span>
+                      </div>
+
+                      {/* Patient Summary & WhatsApp Quick Link */}
+                      <div className="flex items-center justify-between text-xs text-slate-600 mb-2.5 px-1">
+                        <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                          <User className="w-3.5 h-3.5 text-blue-600" />
+                          <span>{patientInfo.name}</span>
                         </span>
-                        <span className="text-xs text-slate-400 font-mono">#{appt.id.slice(0, 6)}</span>
-                      </div>
-                      <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
-                        appt.status === "CONFIRMED" ? "bg-emerald-100 text-emerald-800"
-                        : appt.status === "COMPLETED" ? "bg-blue-100 text-blue-800"
-                        : appt.status === "CANCELLED" ? "bg-red-100 text-red-800"
-                        : "bg-amber-100 text-amber-800"
-                      }`}>{appt.status}</span>
-                    </div>
-
-                    <p className="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-100 mb-4">
-                      {appt.notes || "General Dental Consultation"}
-                    </p>
-
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-                      <div className="flex items-center gap-1.5">
-                        {appt.status !== "CONFIRMED" && (
-                          <button onClick={() => handleUpdateStatus(appt.id, "CONFIRMED")}
-                            className="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center gap-1">
-                            <Check className="w-3 h-3" /> Confirm
-                          </button>
-                        )}
-                        {appt.status !== "COMPLETED" && (
-                          <button onClick={() => handleUpdateStatus(appt.id, "COMPLETED")}
-                            className="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3" /> Complete
-                          </button>
-                        )}
-                        {appt.status !== "CANCELLED" && (
-                          <button onClick={() => handleUpdateStatus(appt.id, "CANCELLED")}
-                            className="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold flex items-center gap-1">
-                            <X className="w-3 h-3" /> Cancel
-                          </button>
+                        {patientInfo.phone && (
+                          <a
+                            href={`https://wa.me/91${patientInfo.phone}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200 transition-colors"
+                            title="Chat with patient on WhatsApp"
+                          >
+                            <WhatsAppIcon className="w-3 h-3 text-[#25D366]" />
+                            <span>+91 {patientInfo.phone}</span>
+                          </a>
                         )}
                       </div>
-                      <button
-                        onClick={() => {
-                          setSelectedApptForPrescription(appt);
-                          setPrescriptionForm({
-                            diagnosis: "",
-                            instructions: "Rinse mouth with warm salt water. Avoid chewing hard food on treated tooth.",
-                            followUpDate: "",
-                            medicines: [{ name: "Amoxicillin 500mg", dosage: "1 capsule", frequency: "1-0-1", duration: "5 days" }],
-                          });
-                        }}
-                        className="bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5"
-                      >
-                        <FileText className="w-3.5 h-3.5 text-blue-400" />
-                        Write Prescription
-                      </button>
+
+                      <p className="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-100 mb-4">
+                        {appt.notes || "General Dental Consultation"}
+                      </p>
+
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {/* Approve & WhatsApp Patient */}
+                          {appt.status !== "CONFIRMED" && (
+                            <button
+                              onClick={() => {
+                                handleUpdateStatus(appt.id, "CONFIRMED");
+                                const msg = generateWhatsAppConfirmationMessage({
+                                  patientName: patientInfo.name,
+                                  date: appt.appointment_date,
+                                  time: appt.start_time?.slice(0, 5),
+                                  procedure: patientInfo.procedure,
+                                  refId: appt.id,
+                                });
+                                const targetUrl = patientInfo.phone
+                                  ? `https://wa.me/91${patientInfo.phone}?text=${encodeURIComponent(msg)}`
+                                  : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+                                window.open(targetUrl, "_blank");
+                              }}
+                              className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                              title="Confirm appointment and send full confirmation details to patient's WhatsApp"
+                            >
+                              <WhatsAppIcon variant="white" className="w-3.5 h-3.5" />
+                              <span>Approve &amp; WhatsApp</span>
+                            </button>
+                          )}
+
+                          {/* 1-Hour Reminder Button */}
+                          {appt.status === "CONFIRMED" && (
+                            <button
+                              onClick={() => {
+                                const msg = generateWhatsAppReminderMessage({
+                                  patientName: patientInfo.name,
+                                  time: appt.start_time?.slice(0, 5),
+                                  procedure: patientInfo.procedure,
+                                });
+                                const targetUrl = patientInfo.phone
+                                  ? `https://wa.me/91${patientInfo.phone}?text=${encodeURIComponent(msg)}`
+                                  : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+                                window.open(targetUrl, "_blank");
+                              }}
+                              className="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                              title="Send 1-hour prior arrival reminder to patient on WhatsApp"
+                            >
+                              <Clock className="w-3.5 h-3.5 text-amber-600" />
+                              <span>Send 1-Hr Reminder</span>
+                            </button>
+                          )}
+
+                          {appt.status !== "COMPLETED" && (
+                            <button
+                              onClick={() => handleUpdateStatus(appt.id, "COMPLETED")}
+                              className="px-2 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold flex items-center gap-1 cursor-pointer"
+                            >
+                              <CheckCircle2 className="w-3 h-3" /> Complete
+                            </button>
+                          )}
+                          {appt.status !== "CANCELLED" && (
+                            <button
+                              onClick={() => handleUpdateStatus(appt.id, "CANCELLED")}
+                              className="px-2 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold flex items-center gap-1 cursor-pointer"
+                            >
+                              <X className="w-3 h-3" /> Cancel
+                            </button>
+                          )}
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            setSelectedApptForPrescription(appt);
+                            setPrescriptionForm({
+                              diagnosis: "",
+                              instructions: "Rinse mouth with warm salt water. Avoid chewing hard food on treated tooth.",
+                              followUpDate: "",
+                              medicines: [{ name: "Amoxicillin 500mg", dosage: "1 capsule", frequency: "1-0-1", duration: "5 days" }],
+                            });
+                          }}
+                          className="bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <FileText className="w-3.5 h-3.5 text-blue-400" />
+                          Write Prescription
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
 
@@ -1048,14 +1197,26 @@ export default function App() {
                         className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs bg-white" />
                     </div>
 
-                    <button type="submit" disabled={savingPrescription}
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 disabled:opacity-50">
-                      {savingPrescription ? (
-                        <><RefreshCw className="w-3.5 h-3.5 animate-spin" /><span>Saving...</span></>
-                      ) : (
-                        <><CheckCircle2 className="w-3.5 h-3.5" /><span>Save &amp; Issue to Patient</span></>
-                      )}
-                    </button>
+                    <div className="flex items-center gap-2 pt-1">
+                      <button type="submit" disabled={savingPrescription}
+                        className="flex-1 bg-blue-700 hover:bg-blue-800 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer">
+                        {savingPrescription ? (
+                          <><RefreshCw className="w-3.5 h-3.5 animate-spin" /><span>Saving...</span></>
+                        ) : (
+                          <><CheckCircle2 className="w-3.5 h-3.5" /><span>Save &amp; Issue</span></>
+                        )}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleWhatsAppPrescription}
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer"
+                        title="Send formatted prescription summary to patient's WhatsApp"
+                      >
+                        <WhatsAppIcon variant="white" className="w-3.5 h-3.5" />
+                        <span>Send via WhatsApp</span>
+                      </button>
+                    </div>
                   </form>
                 ) : (
                   <div className="py-12 text-center text-xs text-slate-400">
@@ -2134,6 +2295,30 @@ export default function App() {
                   For queries, call <a href="tel:+918971763097" className="text-blue-700 font-semibold">+91 8971763097</a>.
                 </div>
 
+                {/* Instant WhatsApp Confirmation Button */}
+                <div className="pt-1 max-w-md mx-auto w-full">
+                  <a
+                    href={`https://wa.me/91${bookingSuccess.phone ? bookingSuccess.phone.replace(/\D/g, "").slice(-10) : "8971763097"}?text=${encodeURIComponent(
+                      generateWhatsAppConfirmationMessage({
+                        patientName: bookingSuccess.patientName,
+                        date: bookingSuccess.date,
+                        time: bookingSuccess.time,
+                        procedure: bookingSuccess.procedure,
+                        refId: bookingSuccess.id,
+                      })
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.99] text-white py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all group cursor-pointer"
+                  >
+                    <WhatsAppIcon variant="white" className="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform" />
+                    <span>Receive Detailed Booking on WhatsApp</span>
+                  </a>
+                  <p className="text-[10px] text-slate-400 text-center mt-1.5">
+                    Delivers your booking reference, doctor credentials, timings, and clinic map pin directly to WhatsApp.
+                  </p>
+                </div>
+
                 <div className="pt-2 flex flex-col sm:flex-row justify-center gap-2 sm:gap-3">
                   <button
                     onClick={() => setBookingSuccess(null)}
@@ -2537,113 +2722,168 @@ export default function App() {
                     </p>
                   </div>
                 ) : (
-                  doctorAppointments.map((appt) => (
-                    <div
-                      key={appt.id}
-                      className={`bg-white rounded-2xl p-5 border transition-all ${
-                        selectedApptForPrescription?.id === appt.id
-                          ? "border-blue-500 ring-2 ring-blue-500/20 shadow-md"
-                          : "border-slate-200 hover:border-slate-300"
-                      }`}
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                        <div className="flex items-center gap-2">
+                  doctorAppointments.map((appt) => {
+                    const patientInfo = parseApptNotes(appt.notes);
+                    return (
+                      <div
+                        key={appt.id}
+                        className={`bg-white rounded-2xl p-5 border transition-all ${
+                          selectedApptForPrescription?.id === appt.id
+                            ? "border-blue-500 ring-2 ring-blue-500/20 shadow-md"
+                            : "border-slate-200 hover:border-slate-300"
+                        }`}
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`w-2.5 h-2.5 rounded-full ${
+                                appt.status === "CONFIRMED"
+                                  ? "bg-emerald-500"
+                                  : appt.status === "COMPLETED"
+                                  ? "bg-blue-500"
+                                  : appt.status === "CANCELLED"
+                                  ? "bg-red-500"
+                                  : "bg-amber-500"
+                              }`}
+                            ></span>
+                            <span className="font-bold text-slate-900 text-sm">
+                              {appt.appointment_date} • {appt.start_time?.slice(0, 5)}
+                            </span>
+                            <span className="text-xs text-slate-400 font-mono">
+                              #{appt.id.slice(0, 6)}
+                            </span>
+                          </div>
+
                           <span
-                            className={`w-2.5 h-2.5 rounded-full ${
+                            className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
                               appt.status === "CONFIRMED"
-                                ? "bg-emerald-500"
+                                ? "bg-emerald-100 text-emerald-800"
                                 : appt.status === "COMPLETED"
-                                ? "bg-blue-500"
+                                ? "bg-blue-100 text-blue-800"
                                 : appt.status === "CANCELLED"
-                                ? "bg-red-500"
-                                : "bg-amber-500"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-amber-100 text-amber-800"
                             }`}
-                          ></span>
-                          <span className="font-bold text-slate-900 text-sm">
-                            {appt.appointment_date} • {appt.start_time?.slice(0, 5)}
-                          </span>
-                          <span className="text-xs text-slate-400 font-mono">
-                            #{appt.id.slice(0, 6)}
+                          >
+                            {appt.status}
                           </span>
                         </div>
 
-                        <span
-                          className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
-                            appt.status === "CONFIRMED"
-                              ? "bg-emerald-100 text-emerald-800"
-                              : appt.status === "COMPLETED"
-                              ? "bg-blue-100 text-blue-800"
-                              : appt.status === "CANCELLED"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-amber-100 text-amber-800"
-                          }`}
-                        >
-                          {appt.status}
-                        </span>
-                      </div>
-
-                      <p className="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-100 mb-4">
-                        {appt.notes || "General Dental Consultation"}
-                      </p>
-
-                      {/* Action buttons */}
-                      <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-                        <div className="flex items-center gap-1.5">
-                          {appt.status !== "CONFIRMED" && (
-                            <button
-                              onClick={() => handleUpdateStatus(appt.id, "CONFIRMED")}
-                              className="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center gap-1"
+                        <div className="flex flex-wrap items-center justify-between text-xs mb-2.5 bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                          <span className="font-bold text-slate-800">
+                            👤 {patientInfo.name} <span className="font-normal text-slate-500">({patientInfo.procedure})</span>
+                          </span>
+                          {patientInfo.phone && (
+                            <a
+                              href={`https://wa.me/91${patientInfo.phone}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200 transition-colors"
+                              title="Chat with patient on WhatsApp"
                             >
-                              <Check className="w-3 h-3" />
-                              Confirm
-                            </button>
-                          )}
-                          {appt.status !== "COMPLETED" && (
-                            <button
-                              onClick={() => handleUpdateStatus(appt.id, "COMPLETED")}
-                              className="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold flex items-center gap-1"
-                            >
-                              <CheckCircle2 className="w-3 h-3" />
-                              Complete
-                            </button>
-                          )}
-                          {appt.status !== "CANCELLED" && (
-                            <button
-                              onClick={() => handleUpdateStatus(appt.id, "CANCELLED")}
-                              className="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold flex items-center gap-1"
-                            >
-                              <X className="w-3 h-3" />
-                              Cancel
-                            </button>
+                              <WhatsAppIcon className="w-3 h-3 text-[#25D366]" />
+                              <span>+91 {patientInfo.phone}</span>
+                            </a>
                           )}
                         </div>
 
-                        <button
-                          onClick={() => {
-                            setSelectedApptForPrescription(appt);
-                            setPrescriptionForm({
-                              diagnosis: "",
-                              instructions:
-                                "Rinse mouth with warm salt water. Avoid chewing hard food on treated tooth.",
-                              followUpDate: "",
-                              medicines: [
-                                {
-                                  name: "Amoxicillin 500mg",
-                                  dosage: "1 capsule",
-                                  frequency: "1-0-1",
-                                  duration: "5 days",
-                                },
-                              ],
-                            });
-                          }}
-                          className="bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5"
-                        >
-                          <FileText className="w-3.5 h-3.5 text-blue-400" />
-                          Write Prescription
-                        </button>
+                        <p className="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-100 mb-4">
+                          {appt.notes || "General Dental Consultation"}
+                        </p>
+
+                        {/* Action buttons */}
+                        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            {appt.status !== "CONFIRMED" && (
+                              <button
+                                onClick={() => {
+                                  handleUpdateStatus(appt.id, "CONFIRMED");
+                                  const msg = generateWhatsAppConfirmationMessage({
+                                    patientName: patientInfo.name,
+                                    date: appt.appointment_date,
+                                    time: appt.start_time?.slice(0, 5),
+                                    procedure: patientInfo.procedure,
+                                    refId: appt.id,
+                                  });
+                                  const targetUrl = patientInfo.phone
+                                    ? `https://wa.me/91${patientInfo.phone}?text=${encodeURIComponent(msg)}`
+                                    : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+                                  window.open(targetUrl, "_blank");
+                                }}
+                                className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                                title="Confirm appointment and send full confirmation details to patient's WhatsApp"
+                              >
+                                <WhatsAppIcon variant="white" className="w-3.5 h-3.5" />
+                                <span>Approve &amp; WhatsApp</span>
+                              </button>
+                            )}
+                            {appt.status === "CONFIRMED" && (
+                              <button
+                                onClick={() => {
+                                  const msg = generateWhatsAppReminderMessage({
+                                    patientName: patientInfo.name,
+                                    time: appt.start_time?.slice(0, 5),
+                                    procedure: patientInfo.procedure,
+                                  });
+                                  const targetUrl = patientInfo.phone
+                                    ? `https://wa.me/91${patientInfo.phone}?text=${encodeURIComponent(msg)}`
+                                    : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+                                  window.open(targetUrl, "_blank");
+                                }}
+                                className="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                                title="Send 1-hour prior arrival reminder to patient on WhatsApp"
+                              >
+                                <Clock className="w-3.5 h-3.5 text-amber-600" />
+                                <span>Send 1-Hr Reminder</span>
+                              </button>
+                            )}
+                            {appt.status !== "COMPLETED" && (
+                              <button
+                                onClick={() => handleUpdateStatus(appt.id, "COMPLETED")}
+                                className="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold flex items-center gap-1 cursor-pointer"
+                              >
+                                <CheckCircle2 className="w-3 h-3" />
+                                Complete
+                              </button>
+                            )}
+                            {appt.status !== "CANCELLED" && (
+                              <button
+                                onClick={() => handleUpdateStatus(appt.id, "CANCELLED")}
+                                className="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold flex items-center gap-1 cursor-pointer"
+                              >
+                                <X className="w-3 h-3" />
+                                Cancel
+                              </button>
+                            )}
+                          </div>
+
+                          <button
+                            onClick={() => {
+                              setSelectedApptForPrescription(appt);
+                              setPrescriptionForm({
+                                diagnosis: "",
+                                instructions:
+                                  "Rinse mouth with warm salt water. Avoid chewing hard food on treated tooth.",
+                                followUpDate: "",
+                                medicines: [
+                                  {
+                                    name: "Amoxicillin 500mg",
+                                    dosage: "1 capsule",
+                                    frequency: "1-0-1",
+                                    duration: "5 days",
+                                  },
+                                ],
+                              });
+                            }}
+                            className="bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-blue-400" />
+                            Write Prescription
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
 
@@ -2792,23 +3032,35 @@ export default function App() {
                         />
                       </div>
 
-                      <button
-                        type="submit"
-                        disabled={savingPrescription}
-                        className="w-full bg-blue-700 hover:bg-blue-800 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
-                      >
-                        {savingPrescription ? (
-                          <>
-                            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                            <span>Saving Prescription...</span>
-                          </>
-                        ) : (
-                          <>
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                            <span>Save & Issue to Patient</span>
-                          </>
-                        )}
-                      </button>
+                      <div className="flex items-center gap-2 pt-1">
+                        <button
+                          type="submit"
+                          disabled={savingPrescription}
+                          className="flex-1 bg-blue-700 hover:bg-blue-800 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                        >
+                          {savingPrescription ? (
+                            <>
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                              <span>Saving Prescription...</span>
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span>Save &amp; Issue</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleWhatsAppPrescription}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer"
+                          title="Send formatted prescription summary to patient's WhatsApp"
+                        >
+                          <WhatsAppIcon variant="white" className="w-3.5 h-3.5" />
+                          <span>Send via WhatsApp</span>
+                        </button>
+                      </div>
                     </form>
                   ) : (
                     <div className="py-12 text-center text-xs text-slate-400">

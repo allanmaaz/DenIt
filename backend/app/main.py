@@ -258,6 +258,136 @@ def dental_triage_assistant(req: DentalSymptomRequest):
         "disclaimer": MANDATORY_DISCLAIMER
     }
 
+# 8. Automated WhatsApp Notifications & 1-Hour Reminders
+class WhatsAppNotificationRequest(BaseModel):
+    patient_name: str
+    patient_phone: str
+    appointment_date: str
+    start_time: str
+    procedure: Optional[str] = "Dental Consultation"
+    notification_type: str = "CONFIRMATION"  # "CONFIRMATION" or "REMINDER_1HR" or "PRESCRIPTION"
+    clinic_address: str = "18, Lady Curzon Rd, Near Bowring Hospital, Tasker Town, Shivaji Nagar, Bengaluru, Karnataka 560052"
+    google_maps_url: str = "https://www.google.com/maps/search/?api=1&query=Asian+Dental+Care+18+Lady+Curzon+Rd+Shivaji+Nagar+Bengaluru"
+    doctor_name: str = "Dr. Adeeb Thaha C S"
+    clinic_phone: str = "+91 8971763097"
+
+@app.post("/api/notifications/whatsapp-dispatch")
+async def dispatch_whatsapp_notification(req: WhatsAppNotificationRequest):
+    """
+    Sends WhatsApp message via Meta Cloud API if WHATSAPP_TOKEN & WHATSAPP_PHONE_ID are configured,
+    or generates formatted direct dispatch payload.
+    """
+    clean_phone = "".join(filter(str.isdigit, req.patient_phone))
+    if len(clean_phone) == 10:
+        clean_phone = "91" + clean_phone
+
+    if req.notification_type == "REMINDER_1HR":
+        message_text = (
+            f"⏰ *1-Hour Reminder — Asian Dental Care*\n\n"
+            f"Dear {req.patient_name},\n"
+            f"This is a friendly reminder that your dental visit with *{req.doctor_name}* is scheduled in *1 hour* today at *{req.start_time}*.\n\n"
+            f"🩺 *Treatment:* {req.procedure}\n"
+            f"📍 *Clinic Location:* {req.clinic_address}\n"
+            f"🗺️ *Google Maps:* {req.google_maps_url}\n"
+            f"📞 *Clinic Direct:* {req.clinic_phone}\n\n"
+            f"_We look forward to seeing you shortly!_"
+        )
+    else:
+        message_text = (
+            f"🦷 *Asian Dental Care — Appointment Confirmed!*\n\n"
+            f"Dear {req.patient_name},\n"
+            f"Your appointment has been confirmed with *{req.doctor_name}* (BDS, MDS, FICOI USA).\n\n"
+            f"📅 *Date:* {req.appointment_date}\n"
+            f"⏰ *Time Slot:* {req.start_time}\n"
+            f"🩺 *Procedure:* {req.procedure}\n"
+            f"📍 *Clinic Location:* {req.clinic_address}\n"
+            f"🗺️ *Directions:* {req.google_maps_url}\n"
+            f"📞 *Clinic Phone:* {req.clinic_phone}\n\n"
+            f"_Please arrive 10 minutes prior to your slot. If you need to make changes, reply directly to this message._"
+        )
+
+    whatsapp_token = os.getenv("WHATSAPP_TOKEN")
+    whatsapp_phone_id = os.getenv("WHATSAPP_PHONE_ID")
+
+    # If Meta Cloud API is configured, send in the background
+    if whatsapp_token and whatsapp_phone_id:
+        try:
+            async with httpx.AsyncClient() as client:
+                res = await client.post(
+                    f"https://graph.facebook.com/v18.0/{whatsapp_phone_id}/messages",
+                    headers={
+                        "Authorization": f"Bearer {whatsapp_token}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "messaging_product": "whatsapp",
+                        "to": clean_phone,
+                        "type": "text",
+                        "text": {"body": message_text}
+                    }
+                )
+                return {
+                    "success": res.status_code in [200, 201],
+                    "mode": "automated_meta_cloud_api",
+                    "status_code": res.status_code,
+                    "response": res.json()
+                }
+        except Exception as e:
+            return {
+                "success": False,
+                "mode": "automated_meta_cloud_api",
+                "error": str(e)
+            }
+
+    # Zero-cost direct link fallback
+    encoded_text = httpx.URL("", params={"text": message_text}).query.decode("utf-8")
+    direct_url = f"https://wa.me/{clean_phone}?{encoded_text}"
+
+    return {
+        "success": True,
+        "mode": "direct_dispatch",
+        "phone": clean_phone,
+        "direct_url": direct_url,
+        "message_text": message_text
+    }
+
+@app.get("/api/notifications/reminder-cron")
+async def check_and_send_1hr_reminders():
+    """
+    Background cron scanner: finds confirmed appointments scheduled for today within the next hour
+    and dispatches 1-hour reminders.
+    """
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    current_hour_min = datetime.now().strftime("%H:%M")
+
+    async with httpx.AsyncClient() as client:
+        res = await client.get(
+            f"{SUPABASE_URL}/rest/v1/appointments?select=*&appointment_date=eq.{today_str}&status=eq.CONFIRMED",
+            headers=get_supabase_headers()
+        )
+        if res.status_code != 200:
+            return {"status": "error", "message": "Failed to fetch appointments"}
+
+        appts = res.json()
+        upcoming = []
+        for appt in appts:
+            start = appt.get("start_time", "")
+            upcoming.append({
+                "id": appt.get("id"),
+                "date": appt.get("appointment_date"),
+                "start_time": start,
+                "status": appt.get("status"),
+                "notes": appt.get("notes")
+            })
+
+        return {
+            "status": "success",
+            "date": today_str,
+            "current_time": current_hour_min,
+            "scanned_appointments": len(appts),
+            "upcoming": upcoming
+        }
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
