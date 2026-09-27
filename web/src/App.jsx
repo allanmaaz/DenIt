@@ -235,6 +235,7 @@ export default function App() {
   const [chatOpen, setChatOpen] = useState(false);
   const [selectedProcedure, setSelectedProcedure] = useState("Root Canal Therapy (RCT)");
   const [showAllProcedures, setShowAllProcedures] = useState(false);
+  const [navVisible, setNavVisible] = useState(true);
 
   // Booking Form State
   const [booking, setBooking] = useState({
@@ -283,6 +284,37 @@ export default function App() {
       setShowDoctorLoginModal(true);
     }
   }, []);
+
+  // Smooth auto-hide floating capsule header on scroll
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentY = window.scrollY;
+          if (currentY < 40) {
+            setNavVisible(true);
+          } else if (currentY > lastY + 6) {
+            // Scrolling down -> hide navbar smoothly
+            if (!mobileMenuOpen) {
+              setNavVisible(false);
+            }
+          } else if (currentY < lastY - 6) {
+            // Scrolling up / pulling down -> show navbar smoothly
+            setNavVisible(true);
+          }
+          lastY = currentY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [mobileMenuOpen]);
 
   const handleDoctorLogin = (e) => {
     e.preventDefault();
@@ -863,21 +895,27 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
 
       {/* Floating Capsule Top Bar */}
-      <header className="sticky top-3 sm:top-5 z-40 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full transition-all">
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.07)] px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between">
+      <header
+        className={`sticky top-2.5 sm:top-5 z-40 px-2.5 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full transition-all duration-300 ease-in-out ${
+          navVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-24 sm:-translate-y-28 opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="bg-white/95 backdrop-blur-md rounded-full border border-slate-200/80 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.07)] px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-3">
           {/* Logo & Doctor Title */}
           <div
             onClick={() => { setActiveTab("home"); setMobileMenuOpen(false); }}
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group min-w-0 shrink-0"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer group min-w-0 flex-1"
           >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
-              <DentalToothWithStar className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full sm:rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
+              <DentalToothWithStar className="w-4.5 h-4.5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <div className="min-w-0">
-              <h1 className="text-base sm:text-lg font-bold tracking-tight text-slate-900 leading-tight truncate">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-sm sm:text-lg font-bold tracking-tight text-slate-900 leading-tight truncate">
                 Asian Dental Care
               </h1>
-              <p className="text-[10.5px] sm:text-[11.5px] text-slate-500 font-medium leading-tight truncate mt-0.5">
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium leading-tight truncate mt-0.5">
                 Dr. Adeeb Thaha C S • Periodontist & Oral Implantologist
               </p>
             </div>
@@ -998,18 +1036,18 @@ export default function App() {
           </nav>
 
           {/* Right Controls: Capsule Book CTA + Mobile Hamburger */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={() => setActiveTab("book")}
-              className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all items-center gap-2 hover:scale-[1.02] cursor-pointer"
+              className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all items-center gap-1.5 sm:gap-2 hover:scale-[1.02] cursor-pointer"
             >
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>Book Consultation</span>
-              <ArrowRight className="w-4 h-4 ml-0.5" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-0.5" />
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer"
+              className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-full text-slate-700 hover:bg-slate-100 border border-slate-200/80 bg-slate-50/50 cursor-pointer flex items-center justify-center shrink-0 transition-colors"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -1019,41 +1057,66 @@ export default function App() {
 
         {/* Mobile Dropdown Menu Drawer under the capsule */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-2 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-xl px-4 py-4 space-y-2 animate-in slide-in-from-top-2 duration-150">
+          <div className="lg:hidden mt-2 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-2xl p-4 space-y-2 animate-in slide-in-from-top-2 duration-150">
             <button
               onClick={() => { setActiveTab("home"); setMobileMenuOpen(false); }}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 ${activeTab === "home" ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 ${activeTab === "home" ? "bg-blue-50 text-blue-700 font-bold" : "text-slate-700 hover:bg-slate-50"}`}
             >
-              <ShieldCheck className="w-4 h-4 text-blue-700" />
-              Treatments & Doctor Profile
+              <Home className="w-4 h-4 text-blue-600" />
+              Home
             </button>
-            <button
-              onClick={() => { setActiveTab("book"); setMobileMenuOpen(false); }}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 ${activeTab === "book" ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
+            <a
+              href="#procedures"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 text-slate-700 hover:bg-slate-50"
             >
-              <Calendar className="w-4 h-4 text-blue-700" />
-              Book In-Clinic / Video Consultation
-            </button>
+              <DentalOutlineToothIcon className="w-4 h-4 text-blue-600" />
+              Treatments & Procedures
+            </a>
+            <a
+              href="#doctor-bio"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 text-slate-700 hover:bg-slate-50"
+            >
+              <User className="w-4 h-4 text-blue-600" />
+              About Dr. Adeeb Thaha
+            </a>
             <button
               onClick={() => { setActiveTab("lookup"); setMobileMenuOpen(false); }}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 ${activeTab === "lookup" ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 ${activeTab === "lookup" ? "bg-blue-50 text-blue-700 font-bold" : "text-slate-700 hover:bg-slate-50"}`}
             >
-              <FileText className="w-4 h-4 text-blue-700" />
-              Patient Portal (Appointments & Prescriptions)
+              <FileText className="w-4 h-4 text-blue-600" />
+              Patient Portal (Appointments & Rx)
             </button>
+            <a
+              href="#reviews"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 text-slate-700 hover:bg-slate-50"
+            >
+              <Star className="w-4 h-4 text-blue-600" />
+              Reviews & Ratings
+            </a>
+            <a
+              href="#location"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 text-slate-700 hover:bg-slate-50"
+            >
+              <Phone className="w-4 h-4 text-blue-600" />
+              Location & Contact Info
+            </a>
             <div className="pt-2 border-t border-slate-100 flex gap-2">
-              <a
-                href="tel:+918971763097"
-                className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 text-center py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5"
+              <button
+                onClick={() => { setActiveTab("book"); setMobileMenuOpen(false); }}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm"
               >
-                <Phone className="w-3.5 h-3.5 text-blue-700" />
-                Call Clinic
-              </a>
+                <Calendar className="w-3.5 h-3.5" />
+                Book Consultation
+              </button>
               <a
                 href="https://wa.me/918971763097"
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 bg-emerald-700 hover:bg-emerald-800 text-white text-center py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 WhatsApp
@@ -1068,21 +1131,6 @@ export default function App() {
         {/* VIEW 1: HOME (Doctor Profile, Clinic Highlights, Treatments) */}
         {activeTab === "home" && (
           <div>
-            {/* Mobile Quick Category Bar - Navigation Only */}
-            <div className="sm:hidden px-3 py-2 bg-slate-100/90 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs font-semibold text-slate-600">
-              <a href="#procedures" className="shrink-0 px-2.5 py-1 bg-white rounded-lg border border-slate-200 text-slate-700 text-[11px]">
-                Treatments (8)
-              </a>
-              <a href="#doctor-bio" className="shrink-0 px-2.5 py-1 bg-white rounded-lg border border-slate-200 text-slate-700 text-[11px]">
-                Dr. Adeeb Bio
-              </a>
-              <a href="#reviews" className="shrink-0 px-2.5 py-1 bg-white rounded-lg border border-slate-200 text-slate-700 text-[11px]">
-                ⭐ Reviews
-              </a>
-              <a href="#location" className="shrink-0 px-2.5 py-1 bg-white rounded-lg border border-slate-200 text-slate-700 text-[11px]">
-                📍 Location & Hours
-              </a>
-            </div>
 
             {/* Hero Section */}
             <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/50 via-slate-50/30 to-white pt-4 sm:pt-12 pb-12 sm:pb-20 border-b border-slate-100">
