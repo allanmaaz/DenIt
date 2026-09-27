@@ -17,7 +17,6 @@ import {
   ExternalLink,
   ChevronRight,
   Stethoscope,
-  Sparkles,
   Search,
   MessageCircle,
   RefreshCw,
@@ -25,8 +24,31 @@ import {
   Check,
   X,
   Lock,
+  Smile,
 } from "lucide-react";
 import { supabase } from "./lib/supabaseClient";
+
+// Clean, authentic dental clinic emblem
+function DentalToothIcon({ className = "w-6 h-6" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path
+        d="M7 3C4.2 3 2 5.2 2 8c0 3.3 1.5 6.5 2.5 10 .8 2.8 2 3 3.5 3 2 0 2.5-2.5 4-2.5s2 2.5 4 2.5c1.5 0 2.7-.2 3.5-3 1-3.5 2.5-6.7 2.5-10 0-2.8-2.2-5-5-5-2.2 0-3.5 1.5-5.5 1.5S9.2 3 7 3z"
+        fill="currentColor"
+        fillOpacity="0.15"
+      />
+      <path d="M12 7v5M9.5 9.5h5" strokeWidth="2.5" />
+    </svg>
+  );
+}
 
 const CLINIC_INFO = {
   name: "Asian Dental Care",
@@ -47,7 +69,7 @@ const PROCEDURES = [
     category: "Endodontics",
     desc: "Single-visit painless root canal treatment, re-RCT, and restorative crown placement.",
     duration: "45 mins",
-    icon: Sparkles,
+    icon: Activity,
   },
   {
     id: "implants",
@@ -93,9 +115,9 @@ const PROCEDURES = [
     id: "whitening",
     title: "Teeth Whitening & Veneers",
     category: "Cosmetic",
-    desc: "In-office LED laser whitening, composite veneers, and smile designing.",
+    desc: "In-office dental whitening, ceramic veneers, and smile aesthetics.",
     duration: "45 mins",
-    icon: Sparkles,
+    icon: Smile,
   },
   {
     id: "pediatric",
@@ -533,14 +555,14 @@ export default function App() {
             onClick={() => setActiveTab("home")}
             className="flex items-center gap-3.5 cursor-pointer group"
           >
-            <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-6 h-6" />
+            <div className="w-11 h-11 rounded-xl bg-blue-700 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform">
+              <DentalToothIcon className="w-6 h-6" />
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-slate-900 leading-none">
                 Asian Dental Care
               </h1>
-              <p className="text-xs font-medium text-blue-600 mt-1">
+              <p className="text-xs font-semibold text-blue-700 mt-1">
                 {CLINIC_INFO.doctor} • Periodontist & Implantologist
               </p>
             </div>
@@ -613,19 +635,19 @@ export default function App() {
         {activeTab === "home" && (
           <div>
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-white to-slate-50 pt-12 pb-20 border-b border-slate-200/80">
+            <section className="bg-slate-50/80 pt-12 pb-20 border-b border-slate-200">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                   {/* Left Column: Clinic Description */}
                   <div className="lg:col-span-7 space-y-6">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 text-blue-700 text-xs font-semibold tracking-wide">
-                      <ShieldCheck className="w-4 h-4 text-blue-600" />
-                      <span>Private Practice • Asian Dental Care • Shivajinagar</span>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200 text-xs font-semibold tracking-wide">
+                      <ShieldCheck className="w-4 h-4 text-blue-700" />
+                      <span>Private Dental Practice • Asian Dental Care • Shivajinagar</span>
                     </div>
 
                     <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
                       Modern, Painless Dentistry by{" "}
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                      <span className="text-blue-700">
                         {CLINIC_INFO.doctor}
                       </span>
                     </h1>
@@ -637,7 +659,7 @@ export default function App() {
                       reconstruction, your dental health is in expert hands.
                     </p>
 
-                    <blockquote className="border-l-4 border-blue-600 pl-4 py-1 italic text-slate-700 font-medium bg-blue-50/40 rounded-r-lg">
+                    <blockquote className="border-l-4 border-blue-700 pl-4 py-2 italic text-slate-700 font-medium bg-white border border-slate-200 rounded-r-lg shadow-2xs">
                       {CLINIC_INFO.tagline}
                     </blockquote>
 
@@ -645,7 +667,7 @@ export default function App() {
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
                       <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
                         <div className="text-xs font-medium text-slate-500">Facility</div>
-                        <div className="text-sm font-bold text-slate-900 mt-0.5">OT & ICU Equipped</div>
+                        <div className="text-sm font-bold text-slate-900 mt-0.5">Hospital OT & ICU Equipped</div>
                       </div>
                       <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
                         <div className="text-xs font-medium text-slate-500">Wait Times</div>
@@ -661,7 +683,7 @@ export default function App() {
                     <div className="flex flex-wrap items-center gap-4 pt-4">
                       <button
                         onClick={() => setActiveTab("book")}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3.5 rounded-xl font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl transition-all flex items-center gap-2.5 text-base"
+                        className="bg-blue-700 hover:bg-blue-800 text-white px-7 py-3.5 rounded-xl font-semibold shadow-sm hover:shadow transition-all flex items-center gap-2.5 text-base"
                       >
                         <Calendar className="w-5 h-5" />
                         <span>Book an Appointment</span>
@@ -672,7 +694,7 @@ export default function App() {
                         href="https://wa.me/918971763097"
                         target="_blank"
                         rel="noreferrer"
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 rounded-xl font-semibold shadow-md shadow-emerald-500/20 hover:shadow-lg transition-all flex items-center gap-2 text-base"
+                        className="bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-3.5 rounded-xl font-semibold shadow-sm hover:shadow transition-all flex items-center gap-2 text-base"
                       >
                         <MessageCircle className="w-5 h-5" />
                         <span>Chat on WhatsApp</span>
@@ -682,23 +704,19 @@ export default function App() {
 
                   {/* Right Column: Doctor Photo & Clinic Card */}
                   <div className="lg:col-span-5 flex justify-center">
-                    <div className="relative w-full max-w-md">
-                      {/* Decorative backdrop */}
-                      <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur-xl opacity-20 transform -rotate-1"></div>
-
-                      <div className="relative bg-white rounded-2xl border border-slate-200/80 shadow-xl overflow-hidden">
+                    <div className="w-full max-w-md">
+                      <div className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden">
                         {/* Doctor Image */}
                         <div className="relative h-88 bg-slate-100 overflow-hidden">
                           <img
                             src="/doctor.jpeg"
                             alt="Dr. Adeeb Taha - Consultant Periodontist & Implantologist at Asian Dental Care"
-                            className="w-full h-full object-cover object-top hover:scale-102 transition-transform duration-500"
+                            className="w-full h-full object-cover object-top"
                             onError={(e) => {
-                              // Fallback to doctor.png
                               e.target.src = "/doctor.png";
                             }}
                           />
-                          <div className="absolute bottom-3 left-3 right-3 bg-slate-900/80 backdrop-blur-md rounded-xl p-3 text-white border border-white/10 flex items-center justify-between">
+                          <div className="absolute bottom-3 left-3 right-3 bg-slate-900/90 backdrop-blur-xs rounded-xl p-3 text-white border border-slate-700 flex items-center justify-between">
                             <div>
                               <div className="text-sm font-bold flex items-center gap-1.5">
                                 <span>{CLINIC_INFO.doctor}</span>
@@ -706,7 +724,7 @@ export default function App() {
                               </div>
                               <div className="text-xs text-slate-300">{CLINIC_INFO.degrees} • {CLINIC_INFO.title}</div>
                             </div>
-                            <span className="text-[11px] font-semibold bg-blue-500 text-white px-2.5 py-1 rounded-md">
+                            <span className="text-[11px] font-semibold bg-blue-700 text-white px-2.5 py-1 rounded-md">
                               FICOI (USA)
                             </span>
                           </div>
@@ -715,7 +733,7 @@ export default function App() {
                         {/* Card Details */}
                         <div className="p-5 space-y-3.5">
                           <div className="flex items-start gap-3">
-                            <MapPin className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                            <MapPin className="w-5 h-5 text-blue-700 shrink-0 mt-0.5" />
                             <div className="text-xs text-slate-600 leading-snug">
                               <strong className="text-slate-900 block font-semibold text-sm mb-0.5">
                                 {CLINIC_INFO.name}
@@ -729,7 +747,7 @@ export default function App() {
                               <Clock className="w-4 h-4 text-slate-400" />
                               Mon - Sat: 10 AM - 8:30 PM
                             </span>
-                            <span className="font-semibold text-blue-600">Walk-ins & Bookings</span>
+                            <span className="font-semibold text-blue-700">In-Clinic & Video</span>
                           </div>
                         </div>
                       </div>
@@ -1615,12 +1633,12 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-2 space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold">
-                  <Sparkles className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-xl bg-blue-700 flex items-center justify-center text-white font-bold">
+                  <DentalToothIcon className="w-5 h-5" />
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-base">{CLINIC_INFO.name}</h4>
-                  <p className="text-xs text-blue-600 font-medium">Practice of Dr. Adeeb Taha</p>
+                  <p className="text-xs text-blue-700 font-semibold">Practice of Dr. Adeeb Taha</p>
                 </div>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed max-w-sm">
