@@ -906,30 +906,30 @@ export default function App() {
           {/* Logo & Doctor Title */}
           <div
             onClick={() => { setActiveTab("home"); setMobileMenuOpen(false); }}
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0 min-w-0"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0"
           >
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full sm:rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
               <DentalToothWithStar className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-white" />
             </div>
-            <div className="shrink-0 min-w-0">
+            <div className="shrink-0">
               <h1 className="text-sm sm:text-base xl:text-lg font-bold tracking-tight text-slate-900 leading-tight whitespace-nowrap">
                 Asian Dental Care
               </h1>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium leading-tight whitespace-nowrap mt-0.5 hidden sm:block">
-                <span className="hidden xl:inline">Dr. Adeeb Thaha C S • Periodontist & Oral Implantologist</span>
-                <span className="xl:hidden">Dr. Adeeb Thaha C S</span>
+              <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium leading-tight whitespace-nowrap mt-0.5">
+                <span className="sm:hidden">Dr. Adeeb Thaha C S • Periodontist</span>
+                <span className="hidden sm:inline">Dr. Adeeb Thaha C S • Periodontist & Oral Implantologist</span>
               </p>
             </div>
           </div>
 
           {/* Desktop Navigation Capsule Items matching Mockup */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0">
             <button
               onClick={() => {
                 setActiveTab("home");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`px-3 xl:px-3.5 py-1.5 rounded-full text-xs xl:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 ${
+              className={`px-2 xl:px-3 py-1.5 rounded-full text-xs xl:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 ${
                 activeTab === "home"
                   ? "text-blue-600 bg-blue-50/90 font-bold"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
