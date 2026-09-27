@@ -2436,9 +2436,6 @@ export default function App() {
                   onChange={(e) => setDoctorPin(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-center text-lg tracking-widest font-mono focus:ring-2 focus:ring-blue-700 focus:outline-none bg-white"
                 />
-                <p className="text-[11px] text-slate-400 mt-1 text-center">
-                  Default PIN: 1234
-                </p>
               </div>
 
               <div className="flex gap-2">
