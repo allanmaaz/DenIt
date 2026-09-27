@@ -750,11 +750,6 @@ export default function App() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                   {/* Left Column: Clinic Description */}
                   <div className="lg:col-span-7 space-y-4 sm:space-y-6">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200 text-xs font-semibold tracking-wide">
-                      <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-700 shrink-0" />
-                      <span>Private Dental Practice • Shivajinagar, Bengaluru</span>
-                    </div>
-
                     <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-[1.15]">
                       Modern, Painless Dentistry by{" "}
                       <span className="text-blue-700">
@@ -768,10 +763,6 @@ export default function App() {
                       root canals and permanent dental implants to invisible aligners and smile
                       reconstruction, your dental health is in expert hands.
                     </p>
-
-                    <blockquote className="border-l-4 border-blue-700 pl-3.5 sm:pl-4 py-2 italic text-slate-700 font-medium bg-white border border-slate-200 rounded-r-lg shadow-2xs text-xs sm:text-sm">
-                      {CLINIC_INFO.tagline}
-                    </blockquote>
 
                     {/* Trust Highlights - 3 responsive columns */}
                     <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
