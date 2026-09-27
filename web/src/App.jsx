@@ -687,7 +687,7 @@ export default function App() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 pb-24 md:pb-0">
+      <main className="flex-1 pb-8 md:pb-0">
         {/* VIEW 1: HOME (Doctor Profile, Clinic Highlights, Treatments) */}
         {activeTab === "home" && (
           <div>
@@ -1963,33 +1963,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-
-      {/* Mobile Floating Bottom Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 py-2.5 px-3 shadow-lg flex items-center gap-2 pb-[max(0.625rem,env(safe-area-inset-bottom))]">
-        <a
-          href="tel:+918971763097"
-          className="flex-1 bg-slate-100 active:bg-slate-200 text-slate-800 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 border border-slate-200"
-        >
-          <Phone className="w-3.5 h-3.5 text-blue-700" />
-          <span>Call</span>
-        </a>
-        <a
-          href="https://wa.me/918971763097"
-          target="_blank"
-          rel="noreferrer"
-          className="flex-1 bg-emerald-700 active:bg-emerald-800 text-white py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 shadow-2xs"
-        >
-          <MessageCircle className="w-3.5 h-3.5" />
-          <span>WhatsApp</span>
-        </a>
-        <button
-          onClick={() => setActiveTab("book")}
-          className="flex-2 bg-blue-700 active:bg-blue-800 text-white py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs"
-        >
-          <Calendar className="w-3.5 h-3.5" />
-          <span>Book Visit</span>
-        </button>
-      </div>
 
       {/* Secure Doctor Login Modal */}
       {showDoctorLoginModal && (
