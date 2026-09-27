@@ -1,0 +1,15 @@
+name = "ledoctor-edge"
+main = "workers/api-gateway.js"
+compatibility_date = "2024-09-01"
+
+[vars]
+ENVIRONMENT = "production"
+
+# R2 Buckets configuration for LeDoctor medical records and documents
+[[r2_buckets]]
+binding = "MEDICAL_RECORDS_BUCKET"
+bucket_name = "ledoctor-medical-records"
+
+[[r2_buckets]]
+binding = "DOCTOR_DOCS_BUCKET"
+bucket_name = "ledoctor-doctor-documents"

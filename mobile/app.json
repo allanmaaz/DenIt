@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "LeDoctor",
+    "slug": "ledoctor",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#2563EB"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#2563EB"
+      }
+    }
+  }
+}
