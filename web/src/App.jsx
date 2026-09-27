@@ -18,7 +18,6 @@ import {
   ChevronRight,
   Stethoscope,
   Search,
-  MessageCircle,
   RefreshCw,
   LogOut,
   Check,
@@ -88,6 +87,30 @@ function DentalOutlineToothIcon({ className = "w-4 h-4" }) {
       className={className}
     >
       <path d="M7 3C4.2 3 2 5.2 2 8c0 3.3 1.5 6.5 2.5 10 .8 2.8 2 3 3.5 3 2 0 2.5-2.5 4-2.5s2 2.5 4 2.5c1.5 0 2.7-.2 3.5-3 1-3.5 2.5-6.7 2.5-10 0-2.8-2.2-5-5-5-2.2 0-3.5 1.5-5.5 1.5S9.2 3 7 3z" />
+    </svg>
+  );
+}
+
+// Official authentic WhatsApp brand icon with green speech bubble and white telephone handset
+function WhatsAppIcon({ className = "w-5 h-5", variant = "color" }) {
+  if (variant === "white") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.37c1.45.79 3.08 1.19 4.74 1.19 5.46 0 9.92-4.45 9.92-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.1c-1.5 0-2.98-.38-4.28-1.12l-.31-.18-3.18.83.85-3.1-.2-.32a8.04 8.04 0 01-1.23-4.3c0-4.47 3.64-8.1 8.15-8.1 4.51 0 8.15 3.63 8.15 8.1 0 4.47-3.64 8.1-8.15 8.1zm4.47-6.07c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.41-1.33-1.65-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.29-.74-1.76-.19-.46-.39-.4-.53-.41h-.45c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.7 2.6 4.12 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.09.47-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.2-.46-.32z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none">
+      <path
+        fill="#25D366"
+        d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.63C8.75 21.41 10.38 21.82 12.04 21.82C17.5 21.82 21.96 17.37 21.96 11.91C21.96 6.45 17.5 2 12.04 2Z"
+      />
+      <path
+        fill="#FFFFFF"
+        d="M17.47 14.38C17.17 14.23 15.71 13.51 15.44 13.41C15.17 13.31 14.97 13.26 14.77 13.56C14.57 13.86 14 14.53 13.83 14.73C13.66 14.93 13.48 14.95 13.18 14.8C12.88 14.65 11.93 14.34 10.79 13.33C9.91 12.54 9.31 11.57 9.14 11.27C8.97 10.97 9.12 10.81 9.27 10.66C9.4 10.53 9.57 10.32 9.72 10.15C9.87 9.98 9.92 9.85 10.02 9.65C10.12 9.45 10.07 9.28 10 9.13C9.92 8.98 9.33 7.52 9.08 6.93C8.84 6.35 8.59 6.43 8.41 6.42C8.24 6.41 8.04 6.41 7.84 6.41C7.64 6.41 7.32 6.48 7.05 6.78C6.78 7.08 6.01 7.8 6.01 9.26C6.01 10.72 7.08 12.13 7.23 12.33C7.38 12.53 9.33 15.53 12.31 16.82C13.02 17.13 13.57 17.31 14 17.45C14.71 17.68 15.36 17.65 15.87 17.57C16.44 17.49 17.63 16.86 17.88 16.17C18.13 15.48 18.13 14.89 18.05 14.77C17.98 14.65 17.77 14.53 17.47 14.38Z"
+      />
     </svg>
   );
 }
@@ -1118,8 +1141,8 @@ export default function App() {
                 rel="noreferrer"
                 className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
-                WhatsApp
+                <WhatsAppIcon variant="white" className="w-4 h-4 shrink-0" />
+                <span>WhatsApp</span>
               </a>
             </div>
           </div>
@@ -1210,9 +1233,9 @@ export default function App() {
                         href="https://wa.me/918971763097"
                         target="_blank"
                         rel="noreferrer"
-                        className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl font-semibold shadow-xs hover:shadow transition-all flex items-center justify-center gap-2.5 text-sm sm:text-base"
+                        className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl font-semibold shadow-xs hover:shadow transition-all flex items-center justify-center gap-2.5 text-sm sm:text-base group"
                       >
-                        <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
+                        <WhatsAppIcon className="w-5 h-5 sm:w-5.5 sm:h-5.5 shrink-0 group-hover:scale-105 transition-transform" />
                         <span>Chat on WhatsApp</span>
                       </a>
                     </div>
@@ -1272,7 +1295,7 @@ export default function App() {
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent pointer-events-none"></div>
 
                         {/* Floating Card 1: Doctor Credentials (Cleanly framed inside on the upper-right) */}
-                        <div className="absolute top-[40%] -translate-y-1/2 right-3 sm:right-4 lg:right-5 bg-white/95 backdrop-blur-md rounded-2xl border border-white/90 shadow-xl p-3 sm:p-3.5 xl:p-4 flex items-center justify-between gap-3 sm:gap-3.5 max-w-[285px] sm:max-w-[310px] z-10 transition-all hover:scale-[1.02]">
+                        <div className="absolute top-[42%] -translate-y-1/2 right-3 sm:right-4 lg:right-5 bg-white/95 backdrop-blur-md rounded-2xl border border-white/90 shadow-xl p-3 sm:p-3.5 xl:p-4 flex items-center justify-between gap-3 sm:gap-3.5 max-w-[285px] sm:max-w-[310px] z-10 transition-all hover:scale-[1.02]">
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">{CLINIC_INFO.doctor}</span>
