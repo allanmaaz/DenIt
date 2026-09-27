@@ -32,6 +32,7 @@ import {
   ArrowRight,
   Star,
   ChevronDown,
+  Home,
 } from "lucide-react";
 import { supabase } from "./lib/supabaseClient";
 import DentalChatbot from "./components/DentalChatbot";
@@ -54,6 +55,39 @@ function DentalToothIcon({ className = "w-6 h-6" }) {
         fillOpacity="0.15"
       />
       <path d="M12 7v5M9.5 9.5h5" strokeWidth="2.5" />
+    </svg>
+  );
+}
+
+// Logo emblem: solid white tooth with blue star inside matching mockup
+function DentalToothWithStar({ className = "w-6 h-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className}>
+      <path
+        d="M7 2.5C4 2.5 1.5 5 1.5 8c0 3.5 1.5 7 2.5 10.5.8 2.8 2.2 3 3.5 3 2 0 2.5-2.5 4.5-2.5s2.5 2.5 4.5 2.5c1.3 0 2.7-.2 3.5-3 1-3.5 2.5-7 2.5-10.5 0-3-2.5-5.5-5.5-5.5-2.2 0-3.5 1.5-5 1.5s-2.8-1.5-5-1.5z"
+        fill="currentColor"
+      />
+      <polygon
+        points="12,5.8 13.1,8.3 15.8,8.6 13.8,10.4 14.3,13.1 12,11.8 9.7,13.1 10.2,10.4 8.2,8.6 10.9,8.3"
+        fill="#2563eb"
+      />
+    </svg>
+  );
+}
+
+// Crisp outline tooth for nav items
+function DentalOutlineToothIcon({ className = "w-4 h-4" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M7 3C4.2 3 2 5.2 2 8c0 3.3 1.5 6.5 2.5 10 .8 2.8 2 3 3.5 3 2 0 2.5-2.5 4-2.5s2 2.5 4 2.5c1.5 0 2.7-.2 3.5-3 1-3.5 2.5-6.7 2.5-10 0-2.8-2.2-5-5-5-2.2 0-3.5 1.5-5.5 1.5S9.2 3 7 3z" />
     </svg>
   );
 }
@@ -828,40 +862,41 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
 
-      {/* Main Header / Navigation */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      {/* Floating Capsule Top Bar */}
+      <header className="sticky top-3 sm:top-5 z-40 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full transition-all">
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.07)] px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between">
           {/* Logo & Doctor Title */}
           <div
             onClick={() => { setActiveTab("home"); setMobileMenuOpen(false); }}
-            className="flex items-center gap-2.5 sm:gap-3.5 cursor-pointer group min-w-0"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group min-w-0 shrink-0"
           >
-            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-blue-700 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
-              <DentalToothIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
+              <DentalToothWithStar className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-base sm:text-xl font-bold tracking-tight text-slate-900 leading-none truncate">
+              <h1 className="text-base sm:text-lg font-bold tracking-tight text-slate-900 leading-tight truncate">
                 Asian Dental Care
               </h1>
-              <p className="text-[11px] sm:text-xs font-semibold text-blue-700 mt-0.5 truncate max-w-[165px] sm:max-w-none">
+              <p className="text-[10.5px] sm:text-[11.5px] text-slate-500 font-medium leading-tight truncate mt-0.5">
                 Dr. Adeeb Thaha C S • Periodontist & Oral Implantologist
               </p>
             </div>
           </div>
 
-          {/* Desktop Navigation Links matching Mockup */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5">
+          {/* Desktop Navigation Capsule Items matching Mockup */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             <button
               onClick={() => {
                 setActiveTab("home");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === "home"
-                  ? "text-blue-700 bg-blue-50 font-bold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  ? "text-blue-600 bg-blue-50/90 font-bold"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
               }`}
             >
+              <Home className="w-4 h-4 text-blue-600" />
               <span>Home</span>
             </button>
 
@@ -876,11 +911,11 @@ export default function App() {
                   }, 100);
                 }
               }}
-              className="px-3.5 py-1.5 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <DentalToothIcon className="w-3.5 h-3.5 text-slate-500" />
+              <DentalOutlineToothIcon className="w-4 h-4 text-slate-600" />
               <span>Treatments</span>
-              <ChevronDown className="w-3 h-3 text-slate-400" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
             </a>
 
             <a
@@ -894,23 +929,23 @@ export default function App() {
                   }, 100);
                 }
               }}
-              className="px-3.5 py-1.5 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <User className="w-3.5 h-3.5 text-slate-500" />
+              <User className="w-4 h-4 text-slate-600" />
               <span>About Doctor</span>
             </a>
 
             <button
               onClick={() => setActiveTab("lookup")}
-              className={`px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === "lookup"
-                  ? "text-blue-700 bg-blue-50 font-bold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  ? "text-blue-600 bg-blue-50/90 font-bold"
+                  : "text-slate-700 hover:text-blue-600 hover:bg-slate-50"
               }`}
             >
-              <FileText className="w-3.5 h-3.5 text-slate-500" />
+              <FileText className="w-4 h-4 text-slate-600" />
               <span>Patient Portal</span>
-              <ChevronDown className="w-3 h-3 text-slate-400" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
             </button>
 
             <a
@@ -924,9 +959,9 @@ export default function App() {
                   }, 100);
                 }
               }}
-              className="px-3.5 py-1.5 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <Star className="w-3.5 h-3.5 text-slate-500" />
+              <Star className="w-4 h-4 text-slate-600" />
               <span>Reviews</span>
             </a>
 
@@ -941,16 +976,16 @@ export default function App() {
                   }, 100);
                 }
               }}
-              className="px-3.5 py-1.5 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <Phone className="w-3.5 h-3.5 text-slate-500" />
+              <Phone className="w-4 h-4 text-slate-600" />
               <span>Contact</span>
             </a>
 
             {isDoctorAuthenticated && (
               <button
                 onClick={() => setActiveTab("doctor")}
-                className={`ml-2 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                className={`ml-1 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all ${
                   activeTab === "doctor"
                     ? "bg-slate-900 text-white shadow-sm"
                     : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
@@ -962,18 +997,19 @@ export default function App() {
             )}
           </nav>
 
-          {/* Right Controls: Desktop Book CTA + Mobile Hamburger */}
+          {/* Right Controls: Capsule Book CTA + Mobile Hamburger */}
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setActiveTab("book")}
-              className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white px-4.5 py-2.5 rounded-xl text-sm font-bold shadow-xs hover:shadow transition-all items-center gap-2"
+              className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all items-center gap-2 hover:scale-[1.02] cursor-pointer"
             >
               <Calendar className="w-4 h-4" />
               <span>Book Consultation</span>
+              <ArrowRight className="w-4 h-4 ml-0.5" />
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 border border-slate-200"
+              className="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -981,9 +1017,9 @@ export default function App() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu Drawer */}
+        {/* Mobile Dropdown Menu Drawer under the capsule */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-2 shadow-lg animate-in slide-in-from-top-2 duration-150">
+          <div className="lg:hidden mt-2 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-xl px-4 py-4 space-y-2 animate-in slide-in-from-top-2 duration-150">
             <button
               onClick={() => { setActiveTab("home"); setMobileMenuOpen(false); }}
               className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 ${activeTab === "home" ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}
