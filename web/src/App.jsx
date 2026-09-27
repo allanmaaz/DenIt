@@ -450,27 +450,42 @@ export default function App() {
     }
   }, []);
 
-  // Smooth auto-hide floating capsule header on scroll
+  // Ultra-smooth auto-hide floating capsule header on scroll
   useEffect(() => {
-    let lastY = window.scrollY;
+    let lastScrollY = Math.max(0, window.scrollY);
+    let lastToggleY = lastScrollY;
     let ticking = false;
 
     const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const currentY = window.scrollY;
-          if (currentY < 40) {
+          const currentY = Math.max(0, window.scrollY);
+
+          // Always visible and stable near the top of the page
+          if (currentY <= 50) {
             setNavVisible(true);
-          } else if (currentY > lastY + 6) {
-            // Scrolling down -> hide navbar smoothly
+            lastToggleY = currentY;
+            lastScrollY = currentY;
+            ticking = false;
+            return;
+          }
+
+          const diff = currentY - lastToggleY;
+
+          // Scrolling down: require 25px of continuous downward scroll before hiding
+          if (diff > 25) {
             if (!mobileMenuOpen) {
               setNavVisible(false);
             }
-          } else if (currentY < lastY - 6) {
-            // Scrolling up / pulling down -> show navbar smoothly
-            setNavVisible(true);
+            lastToggleY = currentY;
           }
-          lastY = currentY;
+          // Scrolling up / pulling down: require 15px of upward scroll to smoothly slide back in
+          else if (diff < -15) {
+            setNavVisible(true);
+            lastToggleY = currentY;
+          }
+
+          lastScrollY = currentY;
           ticking = false;
         });
         ticking = true;
@@ -1061,13 +1076,13 @@ export default function App() {
 
       {/* Floating Capsule Top Bar */}
       <header
-        className={`sticky top-2.5 sm:top-5 z-40 px-2.5 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full transition-all duration-300 ease-in-out ${
+        className={`fixed top-2.5 sm:top-5 inset-x-0 z-40 px-2.5 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full transition-[transform,opacity] duration-300 ease-out will-change-transform pointer-events-none ${
           navVisible
             ? "translate-y-0 opacity-100"
-            : "-translate-y-24 sm:-translate-y-28 opacity-0 pointer-events-none"
+            : "-translate-y-24 sm:-translate-y-28 opacity-0"
         }`}
       >
-        <div className="bg-white/95 backdrop-blur-md rounded-full border border-slate-200/80 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.07)] px-3 sm:px-4 xl:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4">
+        <div className="pointer-events-auto bg-white/95 backdrop-blur-md rounded-full border border-slate-200/80 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.07)] px-3 sm:px-4 xl:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4">
           {/* Logo & Doctor Title */}
           <div
             onClick={() => { setActiveTab("home"); setMobileMenuOpen(false); }}
@@ -1222,7 +1237,7 @@ export default function App() {
 
         {/* Mobile Dropdown Menu Drawer under the capsule */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-2 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-2xl p-4 space-y-2 animate-in slide-in-from-top-2 duration-150">
+          <div className="pointer-events-auto lg:hidden mt-2 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-2xl p-4 space-y-2 animate-in slide-in-from-top-2 duration-150">
             <button
               onClick={() => { setActiveTab("home"); setMobileMenuOpen(false); }}
               className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 ${activeTab === "home" ? "bg-blue-50 text-blue-700 font-bold" : "text-slate-700 hover:bg-slate-50"}`}
@@ -1291,8 +1306,8 @@ export default function App() {
         )}
       </header>
 
-      {/* Main Content Area */}
-      <main className="flex-1 pb-8 md:pb-0">
+      {/* Main Content Area with top clearance for fixed capsule */}
+      <main className="flex-1 pt-16 sm:pt-20 pb-8 md:pb-0">
         {/* VIEW 1: HOME (Doctor Profile, Clinic Highlights, Treatments) */}
         {activeTab === "home" && (
           <div>
