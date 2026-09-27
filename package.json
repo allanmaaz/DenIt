@@ -2,27 +2,26 @@
   "name": "ledoctor-platform",
   "version": "1.0.0",
   "private": true,
-  "description": "LeDoctor Healthcare & Tele-Dentistry Platform",
+  "description": "Asian Dental Care - Private Dental Practice Platform for Dr. Adeeb Taha",
   "scripts": {
     "dev": "npm --prefix web run dev",
     "dev:web": "npm --prefix web run dev",
     "dev:mobile": "npm --prefix mobile start",
     "dev:backend": "cd backend && python3 -m uvicorn app.main:app --reload --port 8000",
-    "build": "npm --prefix web run build",
+    "build": "cd web && npm install && npm run build && cd .. && rm -rf dist && cp -r web/dist ./dist",
     "build:web": "npm --prefix web run build",
-    "start": "npm --prefix web start",
-    "lint": "npm --prefix web run lint"
+    "preview": "npm --prefix web run preview"
   },
   "keywords": [
-    "telehealth",
+    "asian-dental-care",
     "dentistry",
-    "healthcare",
-    "nextjs",
-    "react-native",
-    "expo",
-    "fastapi",
+    "dr-adeeb-taha",
+    "periodontics",
+    "implants",
+    "react",
+    "vite",
     "supabase"
   ],
-  "author": "LeDoctor Team",
+  "author": "Dr. Adeeb Taha & Team",
   "license": "UNLICENSED"
 }
