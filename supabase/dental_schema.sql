@@ -28,6 +28,83 @@ DO $$ BEGIN
     ON public.profiles FOR SELECT USING (true);
 EXCEPTION WHEN undefined_table THEN null; END $$;
 
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public insert profiles" ON public.profiles;
+    CREATE POLICY "Allow public insert profiles" 
+    ON public.profiles FOR INSERT WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public update profiles" ON public.profiles;
+    CREATE POLICY "Allow public update profiles" 
+    ON public.profiles FOR UPDATE USING (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+-- Appointments RLS Policies (Web Booking & Doctor Schedule)
+ALTER TABLE IF EXISTS public.appointments ENABLE ROW LEVEL SECURITY;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public read appointments" ON public.appointments;
+    CREATE POLICY "Allow public read appointments" 
+    ON public.appointments FOR SELECT USING (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public insert appointments" ON public.appointments;
+    CREATE POLICY "Allow public insert appointments" 
+    ON public.appointments FOR INSERT WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow update appointments" ON public.appointments;
+    CREATE POLICY "Allow update appointments" 
+    ON public.appointments FOR UPDATE USING (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+-- Patients RLS Policies
+ALTER TABLE IF EXISTS public.patients ENABLE ROW LEVEL SECURITY;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public read patients" ON public.patients;
+    CREATE POLICY "Allow public read patients" 
+    ON public.patients FOR SELECT USING (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public insert patients" ON public.patients;
+    CREATE POLICY "Allow public insert patients" 
+    ON public.patients FOR INSERT WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+-- Prescriptions & Medicines RLS Policies
+ALTER TABLE IF EXISTS public.prescriptions ENABLE ROW LEVEL SECURITY;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public read prescriptions" ON public.prescriptions;
+    CREATE POLICY "Allow public read prescriptions" 
+    ON public.prescriptions FOR SELECT USING (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public insert prescriptions" ON public.prescriptions;
+    CREATE POLICY "Allow public insert prescriptions" 
+    ON public.prescriptions FOR INSERT WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+ALTER TABLE IF EXISTS public.prescription_medicines ENABLE ROW LEVEL SECURITY;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public read prescription medicines" ON public.prescription_medicines;
+    CREATE POLICY "Allow public read prescription medicines" 
+    ON public.prescription_medicines FOR SELECT USING (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
+DO $$ BEGIN
+    DROP POLICY IF EXISTS "Allow public insert prescription medicines" ON public.prescription_medicines;
+    CREATE POLICY "Allow public insert prescription medicines" 
+    ON public.prescription_medicines FOR INSERT WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN null; END $$;
+
 -- 2. Dental Treatments Table Structure (Pure DDL - Zero Mock Rows)
 CREATE TABLE IF NOT EXISTS public.dental_treatments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
