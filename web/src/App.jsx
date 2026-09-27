@@ -1095,7 +1095,7 @@ export default function App() {
                   <div className="space-y-2">
                     <div className="text-blue-400 font-bold text-base sm:text-lg">Direct Doctor Communication</div>
                     <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-                      No intermediaries. Direct post-procedure follow-ups and tele-dentistry with Dr.
+                      No intermediaries. Direct post-procedure follow-ups and consultations with Dr.
                       Adeeb Taha for complete peace of mind.
                     </p>
                   </div>
@@ -1276,74 +1276,36 @@ export default function App() {
                 )}
 
                 {/* Step 1: Consultation Type */}
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
                     1. Consultation Type
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <label
-                      className={`cursor-pointer rounded-xl p-3.5 sm:p-4 border flex items-center gap-3 transition-all ${
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setBooking({ ...booking, consultationType: "IN_PERSON" })}
+                      className={`py-3 px-4 rounded-xl border text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
                         booking.consultationType === "IN_PERSON"
-                          ? "border-blue-700 bg-blue-50/50 ring-2 ring-blue-700/20"
-                          : "border-slate-200 hover:border-slate-300"
+                          ? "border-blue-700 bg-blue-50 text-blue-700 font-bold ring-2 ring-blue-700/20"
+                          : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                       }`}
                     >
-                      <input
-                        type="radio"
-                        name="consultationType"
-                        value="IN_PERSON"
-                        checked={booking.consultationType === "IN_PERSON"}
-                        onChange={(e) =>
-                          setBooking({ ...booking, consultationType: e.target.value })
-                        }
-                        className="sr-only"
-                      />
-                      <MapPin
-                        className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 ${
-                          booking.consultationType === "IN_PERSON"
-                            ? "text-blue-700"
-                            : "text-slate-400"
-                        }`}
-                      />
-                      <div>
-                        <div className="font-bold text-slate-900 text-sm">In-Clinic Visit</div>
-                        <div className="text-xs text-slate-500">
-                          Asian Dental Care, Shivaji Nagar, Bengaluru
-                        </div>
-                      </div>
-                    </label>
+                      <MapPin className="w-4 h-4 text-blue-700" />
+                      <span>In-Clinic Visit</span>
+                    </button>
 
-                    <label
-                      className={`cursor-pointer rounded-xl p-3.5 sm:p-4 border flex items-center gap-3 transition-all ${
+                    <button
+                      type="button"
+                      onClick={() => setBooking({ ...booking, consultationType: "VIDEO" })}
+                      className={`py-3 px-4 rounded-xl border text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
                         booking.consultationType === "VIDEO"
-                          ? "border-blue-700 bg-blue-50/50 ring-2 ring-blue-700/20"
-                          : "border-slate-200 hover:border-slate-300"
+                          ? "border-blue-700 bg-blue-50 text-blue-700 font-bold ring-2 ring-blue-700/20"
+                          : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                       }`}
                     >
-                      <input
-                        type="radio"
-                        name="consultationType"
-                        value="VIDEO"
-                        checked={booking.consultationType === "VIDEO"}
-                        onChange={(e) =>
-                          setBooking({ ...booking, consultationType: e.target.value })
-                        }
-                        className="sr-only"
-                      />
-                      <Video
-                        className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 ${
-                          booking.consultationType === "VIDEO" ? "text-blue-700" : "text-slate-400"
-                        }`}
-                      />
-                      <div>
-                        <div className="font-bold text-slate-900 text-sm">
-                          Online Video Consultation
-                        </div>
-                        <div className="text-xs text-slate-500">
-                          Tele-dentistry discussion & digital prescription
-                        </div>
-                      </div>
-                    </label>
+                      <Video className="w-4 h-4 text-blue-700" />
+                      <span>Online Video</span>
+                    </button>
                   </div>
                 </div>
 
@@ -1360,7 +1322,7 @@ export default function App() {
                       <input
                         type="text"
                         required
-                        placeholder="e.g. Rahul Sharma"
+                        placeholder="Enter full name"
                         value={booking.fullName}
                         onChange={(e) => setBooking({ ...booking, fullName: e.target.value })}
                         className="w-full px-3.5 py-2.5 sm:py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-700 text-base sm:text-sm bg-white"
@@ -1374,7 +1336,7 @@ export default function App() {
                       <input
                         type="tel"
                         required
-                        placeholder="e.g. +91 9876543210"
+                        placeholder="Enter phone number"
                         value={booking.phone}
                         onChange={(e) => setBooking({ ...booking, phone: e.target.value })}
                         className="w-full px-3.5 py-2.5 sm:py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-700 text-base sm:text-sm bg-white"
@@ -1388,7 +1350,7 @@ export default function App() {
                     </label>
                     <input
                       type="email"
-                      placeholder="e.g. name@example.com"
+                      placeholder="Enter email address"
                       value={booking.email}
                       onChange={(e) => setBooking({ ...booking, email: e.target.value })}
                       className="w-full px-3.5 py-2.5 sm:py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-700 text-base sm:text-sm bg-white"
@@ -1461,7 +1423,7 @@ export default function App() {
                     </label>
                     <textarea
                       rows={2}
-                      placeholder="e.g. Pain in lower left molar when chewing, swelling, bleeding gums..."
+                      placeholder="Mention any symptoms, tooth pain, or concerns"
                       value={booking.notes}
                       onChange={(e) => setBooking({ ...booking, notes: e.target.value })}
                       className="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-700 text-base sm:text-sm bg-white"
@@ -1510,7 +1472,7 @@ export default function App() {
                 <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="tel"
-                  placeholder="Enter your phone number (e.g. 9876543210)"
+                  placeholder="Enter registered mobile number"
                   value={lookupPhone}
                   onChange={(e) => setLookupPhone(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-700 text-base sm:text-sm bg-white"
@@ -1831,7 +1793,7 @@ export default function App() {
                         <input
                           type="text"
                           required
-                          placeholder="e.g. Acute Irreversible Pulpitis #36"
+                          placeholder="Clinical diagnosis"
                           value={prescriptionForm.diagnosis}
                           onChange={(e) =>
                             setPrescriptionForm({
@@ -1867,7 +1829,7 @@ export default function App() {
                             <div className="flex items-center justify-between">
                               <input
                                 type="text"
-                                placeholder="Medicine Name (e.g. Paracetamol 650mg)"
+                                placeholder="Medicine name & dosage"
                                 value={m.name}
                                 onChange={(e) => updateMedicine(idx, "name", e.target.value)}
                                 className="w-full font-semibold px-2.5 py-1.5 bg-white rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-blue-500"
