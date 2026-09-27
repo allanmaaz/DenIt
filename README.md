@@ -1,63 +1,70 @@
-# DenIt — Dental & Healthcare Platform
+# DenIt — Dental Clinic Platform
 
-DenIt is an integrated healthcare platform designed for modern dental practices, connecting patients with verified dentists for both in-clinic chair procedures and remote tele-dentistry consultations.
+**DenIt** is a private dental clinic application and tele-dentistry platform built specifically for the doctor's dental practice. 
 
----
-
-## 👤 Patient Journey (How It Works for Patients)
-
-### 1. Find the Right Dentist
-* **Browse & Search**: Search for verified dentists, dental surgeons, and orthodontists by clinic name, specialty (e.g., Root Canal, Teeth Cleaning, Invisible Aligners, Whitening), or location.
-* **View Credentials**: Review practitioner qualifications, years of experience, clinic address, and consultation fees before booking.
-
-### 2. Book an Appointment
-* **Select Visit Type**: Choose between an **In-Clinic Chair Visit** (for cleanings, extractions, fillings) or **Digital Tele-Dentistry** (for initial assessments, tooth pain triage, or post-op checkups).
-* **Pick Date & Chair Slot**: Select any upcoming day and choose from convenient morning, afternoon, or evening time slots.
-
-### 3. Confirm & Pay Securely
-* **Transparent Pricing**: See the exact consultation fee upfront with no hidden charges.
-* **Instant Confirmation**: Pay securely using UPI, Credit/Debit card, or Net Banking. Once paid, the booking is instantly registered with the clinic.
-
-### 4. Attend the Consultation
-* **In-Clinic**: Walk in at your scheduled time with your digital appointment confirmation.
-* **Video Consultation**: Tap **Join** from the home screen to start a live, encrypted high-definition video call with your dentist.
-
-### 5. Access Digital Prescriptions & Post-Op Care
-* **Instant Digital Rx**: Immediately view clinical diagnoses (e.g., tooth quadrant/number), prescribed oral medications, dosage instructions, and duration.
-* **Post-Procedure Guidelines**: Follow specific post-operative aftercare instructions (gauze care, salt-water rinses, foods to avoid).
-* **Follow-up Reminders**: Keep track of upcoming crown fittings or stitch removal dates.
+Unlike generic multi-doctor aggregator directories, DenIt is a dedicated clinic portal where patients connect directly with their dentist for in-clinic chair appointments, dental procedure bookings, digital prescriptions, and follow-up care.
 
 ---
 
-## 🩺 Dentist & Practitioner Journey (How It Works for Doctors)
+## 👤 Patient Experience (How It Works for Patients)
 
-### 1. Practice Setup & Verification
-* **Register**: Create an account with your medical registration number, dental qualifications (BDS/MDS), clinic address, and consultation fee.
-* **Get Verified**: Gain a verified badge once credentials are authenticated by the administration.
+### 1. View Dental Treatments & Procedures
+* **Choose a Dental Treatment**: Rather than searching through a directory of random doctors, patients directly select the dental service they need:
+  * **Teeth Cleaning & Scaling** (Preventive plaque & tartar removal)
+  * **Root Canal Therapy** (Pain relief & tooth preservation)
+  * **Teeth Whitening & Aesthetics** (Smile design)
+  * **Clear Aligners & Orthodontics** (Teeth straightening)
+  * **Cavity Fillings & Restorations**
+  * **Tooth Extractions & Oral Surgery**
+  * **Dental Implants & Crowns**
+* **Procedure Details**: View estimated treatment duration, preparation steps, and pricing upfront.
 
-### 2. Manage Clinic Hours & Chair Slots
-* **Operating Hours**: Set your clinic opening and closing times.
-* **Slot Duration**: Configure appointment durations based on procedure types (e.g., 20 mins for scaling, 45 mins for root canals).
+### 2. Book a Clinic Chair Slot
+* **Choose Visit Type**:
+  * **🏥 In-Clinic Chair Visit**: For hands-on procedures, examination, cleanings, and surgical treatments at the clinic.
+  * **📹 Tele-Dentistry Video Assessment**: For initial pain triage, cosmetic consultations, or post-procedure checkups from home.
+* **Pick Date & Time**: View the dentist’s real-time chair schedule and pick an open slot (morning, afternoon, or evening).
 
-### 3. Patient Queue & Schedule
-* **Real-time Queue**: View daily patient arrivals, pending requests, and upcoming slots in one organized timeline.
-* **Confirm or Reschedule**: Accept booking requests with one click or notify patients of changes.
+### 3. Transparent Checkout
+* **Fee Confirmation**: Review the consultation/procedure fee upfront.
+* **Secure Payment**: Complete the booking using UPI (Google Pay, PhonePe), Credit/Debit Card, or Net Banking.
+* **Instant Booking**: The appointment is locked in the dentist's chair queue immediately.
 
-### 4. Consultations & Tele-Dentistry
-* **1-Click Video Calls**: Launch secure video consultations directly from the web portal or mobile app.
-* **Patient History**: Access patient details, prior visits, and past records during the session.
+### 4. Attend the Dental Visit
+* **At the Clinic**: Arrive at the dental clinic at your selected slot for your procedure.
+* **Online Assessment**: Tap **Join** on your phone to connect directly with the dentist on an encrypted, high-definition video call.
 
-### 5. Issue Digital Prescriptions
-* **Record Diagnoses**: Note specific tooth numbers and conditions.
-* **Medication Builder**: Add oral antibiotics, pain relief, and antiseptic mouthwashes with dosage schedules.
-* **Post-Op Instructions**: Include custom aftercare guidelines and follow-up dates that instantly reflect on the patient’s phone.
-
-### 6. Track Earnings & Direct Messaging
-* **Financial Ledger**: Monitor total collected consultation fees, payment statuses, and settlement logs.
-* **Post-Op Chat**: Answer patient questions regarding recovery and medication timing through direct messaging.
+### 5. Access Digital Prescriptions & Post-Op Guidelines
+* **Tooth-Specific Diagnosis**: View clear clinical notes indicating the exact tooth treated (e.g., Tooth #46 Lower Right Molar).
+* **Medication Schedule**: Clear timing and dosage for oral antibiotics, pain relief, and antiseptic mouthwashes.
+* **Post-Procedure Care Instructions**: Immediate access to crucial aftercare steps:
+  * Maintaining bite pressure on sterile gauze
+  * Warm salt-water rinse timings
+  * Dietary guidelines (soft foods, foods to avoid)
+  * Brushing and oral hygiene precautions
+* **Follow-up Reminders**: Automatic alerts for subsequent visits (e.g., permanent crown placement, aligner progress checks).
 
 ---
 
-## 🏛️ Clinic Administrator (Overview)
-* **Doctor Verification**: Review licenses and verify dental practitioners.
-* **Appointments & Revenue**: Monitor overall clinic appointments, patient volume, and transaction history.
+## 🩺 The Dentist's Workspace (How It Works for the Doctor)
+
+### 1. Daily Chair Queue & Schedule
+* **Real-time Patient Timeline**: View upcoming patients, procedure types, and scheduled chair times at a glance.
+* **Manage In-Clinic Flow**: Check in arriving patients, mark procedures completed, or reschedule with one click.
+
+### 2. Clinic Hours & Procedure Durations
+* **Set Working Hours**: Define daily clinic opening and closing times.
+* **Tailored Slot Lengths**: Configure custom durations for different clinical procedures (e.g., 20 mins for checkup/scaling, 45 mins for root canal, 60 mins for smile design).
+
+### 3. Issue Digital Dental Prescriptions
+* **Record Clinical Diagnosis**: Note specific tooth quadrants and clinical findings.
+* **Medication Builder**: Add antibiotics, analgesics, and antiseptic rinses with precise instructions (*"Take after meals"*, *"Dissolve in water"*).
+* **Attach Aftercare Instructions**: Select or type specific post-operative care steps that automatically appear in the patient’s mobile app.
+* **Set Follow-up Visits**: Schedule crown fittings or suture removals.
+
+### 4. Tele-Dentistry Consultations
+* **1-Tap Video Call**: Launch secure video consultations directly from the web dashboard or mobile app to inspect oral concerns remotely.
+
+### 5. Financial Ledger & Patient Communication
+* **Collected Fees Ledger**: Track daily and monthly consultation revenue with payment IDs.
+* **Direct Patient Chat**: Answer patient questions regarding recovery, medication side-effects, or healing progress.
